@@ -1,0 +1,85 @@
+{
+    "name": "TOUCHEEGLOW",
+    "short_name": "TOUCHEEGLOW",
+    "description": "Luxury Skincare from Canada.",
+    "start_url": "/?source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#ec4899",
+    "dir": "ltr",
+    "lang": "en",
+    "categories": [
+        "shopping",
+        "lifestyle",
+        "beauty"
+    ],
+    "icons": [
+        {
+            "src": "/tiwa logo.png",
+            "sizes": "any",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/tiwa logo.png",
+            "sizes": "any",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Shop Skincare",
+            "short_name": "Shop",
+            "description": "Browse skincare products",
+            "url": "/shop?source=pwa-shortcut",
+            "icons": [
+                {
+                    "src": "/tiwa logo.png",
+                    "sizes": "any"
+                }
+            ]
+        },
+        {
+            "name": "My Cart",
+            "short_name": "Cart",
+            "description": "View your shopping cart",
+            "url": "/cart?source=pwa-shortcut",
+            "icons": [
+                {
+                    "src": "/tiwa logo.png",
+                    "sizes": "any"
+                }
+            ]
+        },
+        {
+            "name": "Track Order",
+            "short_name": "Track",
+            "description": "Track your order status",
+            "url": "/order-tracking?source=pwa-shortcut",
+            "icons": [
+                {
+                    "src": "/tiwa logo.png",
+                    "sizes": "any"
+                }
+            ]
+        },
+        {
+            "name": "My Account",
+            "short_name": "Account",
+            "description": "View your account",
+            "url": "/account?source=pwa-shortcut",
+            "icons": [
+                {
+                    "src": "/tiwa logo.png",
+                    "sizes": "any"
+                }
+            ]
+        }
+    ],
+    "screenshots": [],
+    "prefer_related_applications": false,
+    "related_applications": []
+}
