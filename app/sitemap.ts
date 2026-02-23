@@ -1,8 +1,5 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { supabase } from '@/lib/supabase';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
@@ -46,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let categoryPages: MetadataRoute.Sitemap = [];
 
   try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use shared supabase client
 
     // Fetch active products
     const { data: products } = await supabase

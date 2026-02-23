@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPaymentLink } from '@/lib/notifications';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder';
 
 // This endpoint is called by a cron job to send payment reminders
 // for orders that haven't been paid within 15 minutes
@@ -12,9 +12,14 @@ export async function GET(request: Request) {
     // Verify cron secret to prevent unauthorized access
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
-    
+
     if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.warn('Missing Supabase env vars in payment reminder cron. Exiting early.');
+      return NextResponse.json({ error: 'Missing config' }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -40,10 +45,10 @@ export async function GET(request: Request) {
     }
 
     if (!pendingOrders || pendingOrders.length === 0) {
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         message: 'No pending reminders to send',
-        processed: 0 
+        processed: 0
       });
     }
 
@@ -60,7 +65,7 @@ export async function GET(request: Request) {
         // Mark as sent
         await supabase
           .from('orders')
-          .update({ 
+          .update({
             payment_reminder_sent: true,
             payment_reminder_sent_at: new Date().toISOString()
           })
@@ -74,8 +79,8 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: `Processed ${pendingOrders.length} orders`,
       sent,
       failed
