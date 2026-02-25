@@ -9,7 +9,7 @@ export default function WhoWeAreSection() {
     <section className="py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
+
           {/* Text Content */}
           <AnimatedSection className="order-2 lg:order-1">
             <h2 className="text-3xl md:text-4xl font-serif text-gray-900 mb-6">
@@ -23,8 +23,8 @@ export default function WhoWeAreSection() {
                 We focus on quality and value. Whether you're stocking up for your business or shopping for yourself, we handpick our perfumes to deliver genuine products and great prices.
               </p>
               <div className="pt-4">
-                <Link 
-                  href="/about" 
+                <Link
+                  href="/about"
                   className="inline-flex items-center text-blue-800 font-medium hover:text-blue-900 transition-colors group"
                 >
                   <span className="border-b border-transparent group-hover:border-blue-900 transition-colors">Read Our Full Story</span>
@@ -38,7 +38,7 @@ export default function WhoWeAreSection() {
           <AnimatedSection className="order-1 lg:order-2 relative" delay={200}>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative group">
               <Image
-                src="/Whisk_743db4f33bd7ec08b0f46aec28e929cfdr.jpeg"
+                src="/turmeric-soap.jpg"
                 alt="TIWAA PERFUME STYLE HOUSE Interior"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -47,7 +47,7 @@ export default function WhoWeAreSection() {
               {/* Decorative Overlay */}
               <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors duration-300"></div>
             </div>
-            
+
             {/* Floating Element */}
             <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl max-w-xs hidden md:block animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
               <div className="flex items-center gap-4">

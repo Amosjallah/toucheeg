@@ -153,7 +153,7 @@ export default function ContactPage() {
       <PageHero
         title="Get In Touch"
         subtitle="Have a question or need assistance? We're here to help from Satellite, Accra."
-        backgroundImage="/Whisk_835b10a10eab0caa2c7419d4a6e01102dr.jpeg"
+        backgroundImage="/skincare-aesthetic.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

@@ -143,7 +143,7 @@ export default function Home() {
         {/* Background Slider + Per-Slide Content */}
         {[
           {
-            image: '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg',
+            image: '/skincare-aesthetic.jpg',
             tag: 'New Arrivals',
             heading: <>Premium <br /><span className="italic font-light text-blue-200">Glow Collection</span></>,
             subtext: 'Discover our latest skincare arrivals formulated to enhance your natural beauty. Unmatched quality for radiant skin.',
@@ -152,7 +152,7 @@ export default function Home() {
             position: 'object-center'
           },
           {
-            image: '/Whisk_50c2f050b440b4b95064c372c1ec7ee1dr.jpeg',
+            image: '/body-butter.jpg',
             tag: 'Skincare Routine',
             heading: <>Elegance <br /><span className="italic font-light text-rose-200">Redefined</span></>,
             subtext: 'Step into the season with our exclusive skincare edits. Curated for the modern beauty enthusiast.',
@@ -161,7 +161,7 @@ export default function Home() {
             position: 'object-top'
           },
           {
-            image: '/Whisk_64e2698834d1476801a4b505b30c324bdr.jpeg',
+            image: '/hair-growth.jpg',
             tag: 'Exclusive Deals',
             heading: <>Limited <br /><span className="italic font-light text-amber-200">Time Offers</span></>,
             subtext: 'Don\'t miss out on our seasonal sale. Great discounts on your favorite items.',

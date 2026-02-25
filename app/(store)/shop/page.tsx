@@ -202,7 +202,7 @@ function ShopContent() {
       <PageHero
         title="Shop All Products"
         subtitle="Browse our range of dresses, electronics, bags, shoes and more"
-        backgroundImage="/Whisk_6ec7df94ec3ca85b49644810b7fab2ecdr.jpeg"
+        backgroundImage="/skincare-aesthetic.jpg"
       />
 
       {/* Mobile Filter Toggle */}

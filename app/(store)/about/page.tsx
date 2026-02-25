@@ -41,7 +41,7 @@ export default function AboutPage() {
       <PageHero
         title="More Than Just A Brand"
         subtitle="From Satellite, Accra — perfumes wholesale and retail."
-        backgroundImage="/Whisk_743db4f33bd7ec08b0f46aec28e929cfdr.jpeg"
+        backgroundImage="/skincare-aesthetic.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
