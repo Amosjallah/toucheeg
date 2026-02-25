@@ -161,12 +161,12 @@ export default function Home() {
             position: 'object-top'
           },
           {
-            image: '/hair-growth.jpg',
-            tag: 'Exclusive Deals',
-            heading: <>Limited <br /><span className="italic font-light text-amber-200">Time Offers</span></>,
-            subtext: 'Don\'t miss out on our seasonal sale. Great discounts on your favorite items.',
-            cta: { text: 'View Offers', href: '/shop?on_sale=true' },
-            cta2: { text: 'Contact Us', href: '/contact' },
+            image: '/beard-care.jpg',
+            tag: 'Men\'s Grooming',
+            heading: <>Ultimate <br /><span className="italic font-light text-amber-200">Beard Care</span></>,
+            subtext: '100% Natural beard balm and growth oils. Formulated for a fuller, healthier beard.',
+            cta: { text: 'Shop Essentials', href: '/shop?category=mens' },
+            cta2: { text: 'Discover More', href: '/about' },
             position: 'object-center'
           },
         ].map((slide, index) => (
