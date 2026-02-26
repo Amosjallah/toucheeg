@@ -274,7 +274,7 @@ export default function Home() {
               <Link href={`/shop?category=${category.slug}`} key={category.id} className="group cursor-pointer block relative">
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden relative shadow-md group-hover:shadow-xl transition-all duration-300">
                   <Image
-                    src={category.image || category.image_url || 'https://via.placeholder.com/600x800?text=' + encodeURIComponent(category.name)}
+                    src={category.image || category.image_url || '/skincare-aesthetic.jpg'}
                     alt={category.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -354,7 +354,7 @@ export default function Home() {
                     name={product.name}
                     price={product.price}
                     originalPrice={product.compare_at_price}
-                    image={product.product_images?.[0]?.url || 'https://via.placeholder.com/400x500'}
+                    image={product.product_images?.[0]?.url || '/body-butter.jpg'}
                     rating={product.rating_avg || 5}
                     reviewCount={product.review_count || 0}
                     badge={product.featured ? 'Featured' : undefined}

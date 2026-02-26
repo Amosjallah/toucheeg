@@ -50,17 +50,17 @@ function OrderSuccessContent() {
   // Payment verification - called when user is redirected from Moolre with payment_success=true
   const verifyPayment = async (orderNum: string, initialOrder: any) => {
     setVerifying(true);
-    
+
     // Wait 3 seconds to give the callback a chance to process first
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     // Re-fetch order to check if callback already updated it
     const { data: refreshed } = await supabase
       .from('orders')
       .select('*, order_items (*)')
       .eq('order_number', orderNum)
       .single();
-    
+
     if (refreshed?.payment_status === 'paid') {
       setOrder(refreshed);
       setVerifying(false);
@@ -75,10 +75,10 @@ function OrderSuccessContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderNumber: orderNum })
       });
-      
+
       const result = await res.json();
       console.log('Payment verification result:', result);
-      
+
       if (result.success && result.payment_status === 'paid') {
         // Re-fetch full order data
         const { data: updated } = await supabase
@@ -222,7 +222,7 @@ function OrderSuccessContent() {
                   <div key={item.id} className="flex items-center space-x-4">
                     <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
                       <img
-                        src={item.metadata?.image || 'https://via.placeholder.com/150'}
+                        src={item.metadata?.image || '/skincare-aesthetic.jpg'}
                         alt={item.product_name}
                         className="w-full h-full object-cover object-center"
                       />

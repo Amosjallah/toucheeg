@@ -84,7 +84,7 @@ export default function POSPage() {
                     price: p.price,
                     quantity: p.quantity,
                     category: p.categories?.name || 'Uncategorized',
-                    image: p.product_images?.[0]?.url || 'https://via.placeholder.com/150',
+                    image: p.product_images?.[0]?.url || '/skincare-aesthetic.jpg',
                     sku: p.sku
                 }));
                 setProducts(formatted);
