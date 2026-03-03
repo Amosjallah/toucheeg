@@ -67,65 +67,64 @@ interface CMSContextType {
 }
 
 const defaultSettings: SiteSettings = {
-    site_name: 'TIWAA PERFUME STYLE HOUSE',
-    site_tagline: 'I sell perfumes — Wholesale and retail.',
+    site_name: 'TOUCHEEGLOW',
+    site_tagline: 'Luxury Skincare — Canada',
     site_logo: '/tiwa logo.png',
     contact_email: 'tiwaperfumestyle@gmail.com',
     contact_phone: '0545010949',
     contact_whatsapp: '0554169992',
-    contact_address: 'Satellite, Accra',
+    contact_address: 'Canada',
     social_facebook: '',
     social_instagram: '',
     social_twitter: '',
     social_tiktok: '',
     social_snapchat: '',
     social_youtube: '',
-    primary_color: '#059669',
-    secondary_color: '#0D9488',
-    currency: 'GHS',
-    currency_symbol: 'GH₵',
+    primary_color: '#2563eb',
+    secondary_color: '#FBF6F2',
+    currency: 'CAD',
+    currency_symbol: 'CA$',
 };
 
-const CMSContext = createContext<CMSContextType>({
-    settings: defaultSettings,
-    content: [],
-    banners: [],
-    loading: true,
-    getContent: () => undefined,
-    getSetting: () => '',
-    getActiveBanners: () => [],
-    refreshCMS: async () => { },
-});
+const CMSContext = createContext<CMSContextType | undefined>(undefined);
 
 export function CMSProvider({ children }: { children: ReactNode }) {
-    const [settings, setSettings] = useState<SiteSettings>({
-        site_name: 'TIWAA PERFUME STYLE HOUSE',
-        site_tagline: 'I sell perfumes — Wholesale and retail.',
-        site_logo: '/tiwa logo.png',
-        contact_email: 'tiwaperfumestyle@gmail.com',
-        contact_phone: '0545010949',
-        contact_whatsapp: '0554169992',
-        contact_address: 'Satellite, Accra',
-        social_facebook: '',
-        social_instagram: '',
-        social_twitter: '',
-        social_tiktok: '',
-        social_snapchat: '',
-        social_youtube: '',
-        primary_color: '#2563eb',
-        secondary_color: '#FBF6F2',
-        currency: 'GHS',
-        currency_symbol: 'GH₵',
-    });
+    const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
     const [content, setContent] = useState<CMSContent[]>([]);
     const [banners, setBanners] = useState<Banner[]>([]);
     const [loading, setLoading] = useState(false);
 
-    // CMS Fetching Logic Removed - Content is now managed in code.
-    const fetchCMSData = async () => { };
-
-    // Initial load handled by state defaults
+    // Initial load handled by state defaults, or fetch from DB if needed
     useEffect(() => {
+        const fetchCMSData = async () => {
+            try {
+                setLoading(true);
+                // Fetch settings
+                const { data: settingsData } = await supabase.from('site_settings').select('*');
+                if (settingsData) {
+                    const mappedSettings = { ...defaultSettings };
+                    settingsData.forEach(s => {
+                        mappedSettings[s.key] = s.value;
+                    });
+                    setSettings(mappedSettings);
+                }
+
+                // Fetch content
+                const { data: contentData } = await supabase.from('cms_content').select('*').eq('is_active', true);
+                if (contentData) setContent(contentData);
+
+                // Fetch banners
+                const { data: bannersData } = await supabase.from('banners').select('*').eq('is_active', true);
+                if (bannersData) setBanners(bannersData);
+
+            } catch (err) {
+                console.error('Error fetching CMS data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCMSData();
     }, []);
 
     const getContent = (section: string, blockKey: string): CMSContent | undefined => {
@@ -146,6 +145,10 @@ export function CMSProvider({ children }: { children: ReactNode }) {
         });
     };
 
+    const refreshCMS = async () => {
+        // Redo fetchCMSData logic
+    };
+
     return (
         <CMSContext.Provider
             value={{
@@ -156,7 +159,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
                 getContent,
                 getSetting,
                 getActiveBanners,
-                refreshCMS: fetchCMSData,
+                refreshCMS,
             }}
         >
             {children}

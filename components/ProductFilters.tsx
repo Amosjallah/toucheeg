@@ -88,11 +88,11 @@ export default function ProductFilters({ onFilterChange }: ProductFiltersProps) 
     });
   };
 
-  const activeFilterCount = 
-    selectedCategories.length + 
-    selectedBrands.length + 
-    selectedRatings.length + 
-    (inStock ? 1 : 0) + 
+  const activeFilterCount =
+    selectedCategories.length +
+    selectedBrands.length +
+    selectedRatings.length +
+    (inStock ? 1 : 0) +
     (onSale ? 1 : 0) +
     (priceRange[0] !== 0 || priceRange[1] !== 1000 ? 1 : 0);
 
@@ -156,7 +156,7 @@ export default function ProductFilters({ onFilterChange }: ProductFiltersProps) 
                 className="w-full accent-blue-700"
               />
               <p className="text-sm text-gray-600">
-                GH₵{priceRange[0]} - GH₵{priceRange[1]}
+                CA${priceRange[0]} - CA${priceRange[1]}
               </p>
             </div>
           </div>
@@ -211,9 +211,8 @@ export default function ProductFilters({ onFilterChange }: ProductFiltersProps) 
                       {[...Array(5)].map((_, i) => (
                         <i
                           key={i}
-                          className={`ri-star-${i < rating ? 'fill' : 'line'} text-sm ${
-                            i < rating ? 'text-yellow-400' : 'text-gray-300'
-                          }`}
+                          className={`ri-star-${i < rating ? 'fill' : 'line'} text-sm ${i < rating ? 'text-yellow-400' : 'text-gray-300'
+                            }`}
                         ></i>
                       ))}
                     </div>

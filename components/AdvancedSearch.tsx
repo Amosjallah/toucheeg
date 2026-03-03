@@ -114,7 +114,7 @@ export default function AdvancedSearch() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       const recognition = new SpeechRecognition();
-      
+
       recognition.onstart = () => {
         setIsVoiceActive(true);
       };
@@ -156,13 +156,12 @@ export default function AdvancedSearch() {
           className="w-full pl-12 pr-24 py-3 border-2 border-gray-300 rounded-full focus:border-blue-700 focus:ring-2 focus:ring-blue-200 text-sm"
         />
         <i className="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-xl text-gray-400"></i>
-        
+
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-2">
           <button
             onClick={handleVoiceSearch}
-            className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
-              isVoiceActive ? 'bg-red-500 text-white animate-pulse' : 'hover:bg-gray-100 text-gray-600'
-            }`}
+            className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${isVoiceActive ? 'bg-red-500 text-white animate-pulse' : 'hover:bg-gray-100 text-gray-600'
+              }`}
           >
             <i className="ri-mic-line"></i>
           </button>
@@ -204,7 +203,7 @@ export default function AdvancedSearch() {
                     <p className="font-semibold text-gray-900 text-sm">{product.name}</p>
                     <p className="text-xs text-gray-500">{product.category}</p>
                   </div>
-                  <p className="font-bold text-gray-900">GH₵{product.price}</p>
+                  <p className="font-bold text-gray-900">CA${product.price}</p>
                 </Link>
               ))}
             </div>

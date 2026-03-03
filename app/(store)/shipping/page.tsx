@@ -3,52 +3,52 @@ import Link from 'next/link';
 export default function ShippingPage() {
   const deliveryOptions = [
     {
-      type: 'Standard Delivery',
-      time: '2-5 Business Days',
-      cost: 'GHS 20',
+      type: 'Standard Shipping',
+      time: '3-7 Business Days',
+      cost: 'CA$ 15.00',
       description: 'Perfect for regular orders with no rush',
       icon: 'ri-truck-line'
     },
     {
-      type: 'Express Delivery',
-      time: 'Next Day',
-      cost: 'GHS 40',
-      description: 'Available for Accra & Kumasi orders placed before 2pm',
+      type: 'Express Shipping',
+      time: '1-3 Business Days',
+      cost: 'CA$ 25.00',
+      description: 'Fast delivery across Canada',
       icon: 'ri-rocket-line'
     },
     {
-      type: 'Store Pickup',
-      time: 'Same Day',
+      type: 'Free Shipping',
+      time: '3-7 Business Days',
       cost: 'FREE',
-      description: 'Collect from our Accra location',
-      icon: 'ri-store-2-line'
+      description: 'On orders over CA$ 150',
+      icon: 'ri-gift-line'
     }
   ];
 
   const zones = [
     {
-      zone: 'Zone 1 - Accra Metro',
-      areas: 'East Legon, Osu, Labone, Airport, Dzorwulu, Cantonments, Adabraka, Tema',
-      standard: '1-2 days',
-      express: 'Next day'
-    },
-    {
-      zone: 'Zone 2 - Greater Accra',
-      areas: 'Madina, Legon, Haatso, Achimota, Dansoman, Spintex, Teshie, Kasoa',
-      standard: '2-3 days',
-      express: 'Next day'
-    },
-    {
-      zone: 'Zone 3 - Major Cities',
-      areas: 'Kumasi, Takoradi, Cape Coast, Tamale, Sunyani, Ho, Koforidua',
-      standard: '3-4 days',
+      zone: 'Ontario & Quebec',
+      areas: 'Toronto, Montreal, Ottawa, Quebec City, etc.',
+      standard: '2-4 days',
       express: '1-2 days'
     },
     {
-      zone: 'Zone 4 - Other Areas',
-      areas: 'All other locations within Ghana',
-      standard: '4-5 days',
-      express: 'Not available'
+      zone: 'Western Canada',
+      areas: 'Vancouver, Calgary, Edmonton, Winnipeg, etc.',
+      standard: '3-5 days',
+      express: '1-3 days'
+    },
+    {
+      zone: 'Atlantic Canada',
+      areas: 'Halifax, St. John\'s, Fredericton, etc.',
+      standard: '4-6 days',
+      express: '2-3 days'
+    },
+    {
+      zone: 'Territories',
+      areas: 'Whitehorse, Yellowknife, Iqaluit',
+      standard: '5-8 days',
+      express: '3-5 days'
     }
   ];
 
@@ -59,7 +59,7 @@ export default function ShippingPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl font-bold text-gray-900 mb-6">Shipping & Delivery</h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Fast, reliable delivery across Ghana. Free standard shipping on orders over GHS 300.
+              Fast, reliable delivery across Canada. Free standard shipping on orders over CA$ 150.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function ShippingPage() {
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-3">Free Standard Shipping</h3>
           <p className="text-lg text-gray-600">
-            Spend GHS 300 or more and get <span className="font-bold text-blue-700">FREE standard delivery</span> anywhere in Ghana
+            Spend CA$ 150 or more and get <span className="font-bold text-blue-700">FREE standard delivery</span> anywhere in Canada
           </p>
         </div>
 
@@ -102,8 +102,8 @@ export default function ShippingPage() {
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Zone</th>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Areas Covered</th>
-                    <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Standard</th>
-                    <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Express</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Standard Shipping</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Express Shipping</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -132,7 +132,7 @@ export default function ShippingPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Order Processing</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Orders placed before 2pm are processed same day. We carefully pack your items and prepare them for dispatch.
+                    Orders are processed within 1-2 business days. We carefully pack your items and prepare them for dispatch.
                   </p>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function ShippingPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Dispatch</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Your order is handed to our trusted delivery partner. You'll receive a tracking number via email and SMS.
+                    Your order is handed to our trusted delivery partner (Canada Post, FedEx, or UPS). You'll receive a tracking number via email.
                   </p>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function ShippingPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Delivery</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Our delivery partner will contact you before arrival. Sign for your package and enjoy your purchase!
+                    Our delivery partner will deliver to your doorstep. Sign for your package and enjoy your purchase!
                   </p>
                 </div>
               </div>
@@ -181,10 +181,10 @@ export default function ShippingPage() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <i className="ri-time-line text-blue-700"></i>
-                  Cut-off Times
+                  Processing Times
                 </h3>
                 <p className="text-gray-600 leading-relaxed text-sm">
-                  Orders placed before 2pm are dispatched same day. Orders after 2pm are dispatched next business day.
+                  Orders placed before 12pm EST are typically processed same day. Orders after 12pm or on weekends are processed next business day.
                 </p>
               </div>
 
@@ -201,10 +201,10 @@ export default function ShippingPage() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <i className="ri-phone-line text-blue-700"></i>
-                  Delivery Contact
+                  Contact Info
                 </h3>
                 <p className="text-gray-600 leading-relaxed text-sm">
-                  Our delivery partner will call you before arrival. Please ensure your phone number is correct and reachable.
+                  Ensure your shipping address and contact details are accurate to avoid delays.
                 </p>
               </div>
 
@@ -214,7 +214,7 @@ export default function ShippingPage() {
                   Failed Deliveries
                 </h3>
                 <p className="text-gray-600 leading-relaxed text-sm">
-                  If you're unavailable, we'll attempt delivery twice. After that, the package is held at a collection point for 5 days.
+                  If you're unavailable, we'll follow our delivery partner's standard procedure (leave a notice or re-attempt).
                 </p>
               </div>
 
@@ -224,7 +224,7 @@ export default function ShippingPage() {
                   Package Security
                 </h3>
                 <p className="text-gray-600 leading-relaxed text-sm">
-                  All packages are insured during transit. Report any damage or missing items within 48 hours of delivery.
+                  Report any damage or missing items within 48 hours of delivery.
                 </p>
               </div>
             </div>

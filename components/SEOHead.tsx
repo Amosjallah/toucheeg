@@ -16,31 +16,31 @@ interface SEOProps {
 }
 
 export function generateMetadata({
-  title = 'TIWAA PERFUME STYLE HOUSE — Perfumes Wholesale & Retail',
-  description = 'I sell perfumes — wholesale and retail. Satellite, Accra. Call 054 501 0949 · WhatsApp 055 416 9992.',
+  title = 'TOUCHEEGLOW — Luxury Skincare — Canada',
+  description = 'Premium luxury skincare products. Based in Canada.',
   keywords = [],
   ogImage,
   ogType = 'website',
   price,
-  currency = 'GHS',
+  currency = 'CAD',
   availability,
   category,
   publishedTime,
   author,
   noindex = false
 }: SEOProps): Metadata {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://toucheeglow.com';
   const defaultOgImage = `${siteUrl}/tiwa%20logo.png`;
   const resolvedOgImage = ogImage || defaultOgImage;
-  const siteName = 'TIWAA PERFUME STYLE HOUSE';
+  const siteName = 'TOUCHEEGLOW';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
   const defaultKeywords = [
-    'online shopping ghana',
-    'premium products ghana',
-    'buy online ghana',
-    'ecommerce ghana',
-    'fast delivery ghana',
+    'online shopping canada',
+    'luxury skincare canada',
+    'premium beauty shop',
+    'ecommerce canada',
+    'fast delivery canada',
     'secure shopping'
   ];
 
@@ -57,7 +57,7 @@ export function generateMetadata({
       images: [{ url: resolvedOgImage, width: 1200, height: 630, alt: title }],
       type: ogType as any,
       siteName,
-      locale: 'en_GH'
+      locale: 'en_CA'
     },
     twitter: {
       card: 'summary_large_image',
@@ -121,7 +121,7 @@ export function generateProductSchema(product: {
     offers: {
       '@type': 'Offer',
       price: product.price,
-      priceCurrency: product.currency || 'GHS',
+      priceCurrency: product.currency || 'CAD',
       availability: product.availability === 'in_stock'
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
@@ -161,30 +161,30 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 export function generateOrganizationSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://toucheeglow.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'TIWAA PERFUME STYLE HOUSE',
+    name: 'TOUCHEEGLOW',
     url: siteUrl,
     logo: `${siteUrl}/tiwa%20logo.png`,
     image: `${siteUrl}/tiwa%20logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+233545010949',
+      telephone: '+1-XXX-XXX-XXXX',
       contactType: 'Customer Service',
-      areaServed: 'GH',
+      areaServed: 'CA',
       availableLanguage: ['English']
     }
   };
 }
 
 export function generateWebsiteSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://toucheeglow.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'TIWAA PERFUME STYLE HOUSE',
+    name: 'TOUCHEEGLOW',
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',

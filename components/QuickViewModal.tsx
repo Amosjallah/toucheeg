@@ -46,7 +46,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div 
+        <div
           className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75"
           onClick={onClose}
         ></div>
@@ -81,9 +81,8 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                       <button
                         key={index}
                         onClick={() => setSelectedImage(index)}
-                        className={`relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${
-                          selectedImage === index ? 'border-blue-700' : 'border-transparent hover:border-gray-300'
-                        }`}
+                        className={`relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${selectedImage === index ? 'border-blue-700' : 'border-transparent hover:border-gray-300'
+                          }`}
                       >
                         <Image src={image} alt="" fill className="object-cover object-top" sizes="12vw" quality={50} />
                       </button>
@@ -94,7 +93,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
               <div className="flex flex-col">
                 <div className="mb-2">
-                  <Link 
+                  <Link
                     href={`/categories?category=${product.category}`}
                     className="text-sm text-blue-700 hover:text-blue-800 font-medium whitespace-nowrap"
                   >
@@ -109,11 +108,10 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                     {[...Array(5)].map((_, i) => (
                       <i
                         key={i}
-                        className={`${
-                          i < Math.floor(product.rating)
+                        className={`${i < Math.floor(product.rating)
                             ? 'ri-star-fill text-yellow-400'
                             : 'ri-star-line text-gray-300'
-                        }`}
+                          }`}
                       ></i>
                     ))}
                   </div>
@@ -121,10 +119,10 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                 </div>
 
                 <div className="flex items-baseline space-x-3 mb-4">
-                  <span className="text-3xl font-bold text-gray-900">GH₵{product.price.toFixed(2)}</span>
+                  <span className="text-3xl font-bold text-gray-900">CA${product.price.toFixed(2)}</span>
                   {product.originalPrice && (
                     <>
-                      <span className="text-lg text-gray-400 line-through">GH₵{product.originalPrice.toFixed(2)}</span>
+                      <span className="text-lg text-gray-400 line-through">CA${product.originalPrice.toFixed(2)}</span>
                       <span className="px-2 py-1 bg-red-100 text-red-700 text-sm font-semibold rounded whitespace-nowrap">
                         Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                       </span>
@@ -144,11 +142,10 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                         <button
                           key={color}
                           onClick={() => setSelectedColor(color)}
-                          className={`px-4 py-2 border-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                            selectedColor === color
+                          className={`px-4 py-2 border-2 rounded-lg font-medium transition-colors whitespace-nowrap ${selectedColor === color
                               ? 'border-blue-700 bg-blue-50 text-blue-700'
                               : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                          }`}
+                            }`}
                         >
                           {color}
                         </button>
@@ -167,11 +164,10 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size)}
-                          className={`px-4 py-2 border-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                            selectedSize === size
+                          className={`px-4 py-2 border-2 rounded-lg font-medium transition-colors whitespace-nowrap ${selectedSize === size
                               ? 'border-blue-700 bg-blue-50 text-blue-700'
                               : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                          }`}
+                            }`}
                         >
                           {size}
                         </button>
@@ -213,13 +209,12 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                   <button
                     onClick={handleAddToCart}
                     disabled={!product.inStock}
-                    className={`w-full py-4 rounded-lg font-semibold transition-colors whitespace-nowrap ${
-                      addedToCart
+                    className={`w-full py-4 rounded-lg font-semibold transition-colors whitespace-nowrap ${addedToCart
                         ? 'bg-green-600 text-white'
                         : product.inStock
-                        ? 'bg-blue-700 hover:bg-blue-800 text-white'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
+                          ? 'bg-blue-700 hover:bg-blue-800 text-white'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
                   >
                     {addedToCart ? (
                       <span className="flex items-center justify-center">

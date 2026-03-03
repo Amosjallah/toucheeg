@@ -105,7 +105,7 @@ export default function AdminOrdersPage() {
       // Separate confirmed (paid) from abandoned (pending payment)
       const confirmedOrders = ordersData?.filter(o => o.payment_status === 'paid') || [];
       const abandonedOrders = ordersData?.filter(o => o.payment_status !== 'paid') || [];
-      
+
       setConfirmedCount(confirmedOrders.length);
       setAbandonedCount(abandonedOrders.length);
 
@@ -183,7 +183,7 @@ export default function AdminOrdersPage() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-CA', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -224,12 +224,12 @@ export default function AdminOrdersPage() {
         // Send Notifications with auth token
         const { data: { session } } = await supabase.auth.getSession();
         const authToken = session?.access_token;
-        
+
         const updatedOrders = orders.filter(o => selectedOrders.includes(o.id));
         updatedOrders.forEach(order => {
           fetch('/api/notifications', {
             method: 'POST',
-            headers: { 
+            headers: {
               'Content-Type': 'application/json',
               ...(authToken && { 'Authorization': `Bearer ${authToken}` })
             },
@@ -294,9 +294,9 @@ export default function AdminOrdersPage() {
           payload: order
         })
       });
-      
+
       if (!response.ok) throw new Error('Failed to send');
-      
+
       alert(`Payment link sent to ${order.phone || order.email}`);
     } catch (error) {
       console.error('Error sending payment link:', error);
@@ -319,7 +319,7 @@ export default function AdminOrdersPage() {
       customerName.includes(searchQuery.toLowerCase()) ||
       customerEmail.includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    const matchesProduct = productFilter === 'all' || 
+    const matchesProduct = productFilter === 'all' ||
       order.order_items?.some((item: any) => item.product_name === productFilter);
     return matchesViewTab && matchesSearch && matchesStatus && matchesProduct;
   });
@@ -353,22 +353,20 @@ export default function AdminOrdersPage() {
       <div className="flex border-b border-gray-200">
         <button
           onClick={() => { setOrderViewTab('confirmed'); setStatusFilter('all'); }}
-          className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors cursor-pointer ${
-            orderViewTab === 'confirmed'
+          className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors cursor-pointer ${orderViewTab === 'confirmed'
               ? 'border-blue-700 text-blue-700'
               : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
+            }`}
         >
           <i className="ri-check-double-line mr-2"></i>
           Confirmed Orders ({confirmedCount})
         </button>
         <button
           onClick={() => { setOrderViewTab('abandoned'); setStatusFilter('all'); }}
-          className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors cursor-pointer ${
-            orderViewTab === 'abandoned'
+          className={`px-6 py-3 font-semibold text-sm border-b-2 transition-colors cursor-pointer ${orderViewTab === 'abandoned'
               ? 'border-amber-600 text-amber-600'
               : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
+            }`}
         >
           <i className="ri-shopping-cart-2-line mr-2"></i>
           Abandoned Carts ({abandonedCount})
@@ -376,21 +374,21 @@ export default function AdminOrdersPage() {
       </div>
 
       {orderViewTab === 'confirmed' && (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {orderStats.map((stat) => (
-          <button
-            key={stat.status}
-            onClick={() => setStatusFilter(stat.status)}
-            className={`p-4 rounded-xl border-2 transition-all text-left cursor-pointer ${statusFilter === stat.status
-              ? 'border-blue-700 bg-blue-50'
-              : 'border-gray-200 bg-white hover:border-gray-300'
-              }`}
-          >
-            <p className="text-2xl font-bold text-gray-900">{stat.count}</p>
-            <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
-          </button>
-        ))}
-      </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {orderStats.map((stat) => (
+            <button
+              key={stat.status}
+              onClick={() => setStatusFilter(stat.status)}
+              className={`p-4 rounded-xl border-2 transition-all text-left cursor-pointer ${statusFilter === stat.status
+                ? 'border-blue-700 bg-blue-50'
+                : 'border-gray-200 bg-white hover:border-gray-300'
+                }`}
+            >
+              <p className="text-2xl font-bold text-gray-900">{stat.count}</p>
+              <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
+            </button>
+          ))}
+        </div>
       )}
 
       {/* Abandoned carts info banner */}
@@ -466,7 +464,7 @@ export default function AdminOrdersPage() {
                 <select className="w-full px-3 py-2 pr-8 border-2 border-gray-300 rounded-lg text-sm cursor-pointer">
                   <option>All Methods</option>
                   <option>Moolre</option>
-                  <option>Mobile Money</option>
+                  <option>E-Transfer</option>
                   <option>Card</option>
                 </select>
               </div>
@@ -579,7 +577,7 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="py-4 px-4 text-gray-700 text-sm whitespace-nowrap">{formatDate(order.created_at)}</td>
                     <td className="py-4 px-4 text-gray-700">{getItemCount(order)}</td>
-                    <td className="py-4 px-4 font-semibold text-gray-900 whitespace-nowrap">GH₵ {order.total?.toFixed(2) || '0.00'}</td>
+                    <td className="py-4 px-4 font-semibold text-gray-900 whitespace-nowrap">CA$ {order.total?.toFixed(2) || '0.00'}</td>
                     <td className="py-4 px-4 text-sm whitespace-nowrap">
                       <div className="flex flex-col">
                         <span className="text-gray-700">{order.payment_method || 'N/A'}</span>

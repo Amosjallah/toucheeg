@@ -6,9 +6,9 @@ import { supabase } from '@/lib/supabase';
 
 // Helper for currency formatting
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-GH', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'GHS'
+    currency: 'CAD'
   }).format(amount);
 };
 
@@ -188,7 +188,7 @@ export default function CustomerInsightsPage() {
             </div>
             <p className="text-sm text-gray-600 mb-1">VIP Customers</p>
             <p className="text-3xl font-bold text-gray-900">{stats.vip}</p>
-            <p className="text-sm text-blue-700 font-semibold mt-2">Spent &gt; GH₵1,000</p>
+            <p className="text-sm text-blue-700 font-semibold mt-2">Spent &gt; CA$1,000</p>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6">
@@ -342,10 +342,10 @@ export default function CustomerInsightsPage() {
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div className="flex items-center space-x-6 text-sm text-gray-600">
                     <span>
-                      <span className="font-medium">Joined:</span> {new Date(customer.joinDate).toLocaleDateString('en-GB')}
+                      <span className="font-medium">Joined:</span> {new Date(customer.joinDate).toLocaleDateString('en-CA')}
                     </span>
                     <span>
-                      <span className="font-medium">Last Order:</span> {new Date(customer.lastOrder).toLocaleDateString('en-GB')}
+                      <span className="font-medium">Last Order:</span> {new Date(customer.lastOrder).toLocaleDateString('en-CA')}
                     </span>
                   </div>
                 </div>

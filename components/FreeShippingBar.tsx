@@ -11,23 +11,21 @@ export default function FreeShippingBar({ currentAmount, threshold = 200 }: Free
   const isQualified = currentAmount >= threshold;
 
   return (
-    <div className={`rounded-lg p-4 mb-4 ${
-      isQualified 
-        ? 'bg-gradient-to-r from-blue-500 to-teal-500 text-white' 
+    <div className={`rounded-lg p-4 mb-4 ${isQualified
+        ? 'bg-gradient-to-r from-blue-500 to-teal-500 text-white'
         : 'bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200'
-    }`}>
+      }`}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
-          <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
-            isQualified ? 'bg-white/20' : 'bg-amber-500'
-          }`}>
+          <div className={`w-8 h-8 flex items-center justify-center rounded-full ${isQualified ? 'bg-white/20' : 'bg-amber-500'
+            }`}>
             <i className={`ri-truck-line text-lg ${isQualified ? 'text-white' : 'text-white'}`}></i>
           </div>
           <span className={`font-semibold ${isQualified ? 'text-white' : 'text-gray-900'}`}>
             {isQualified ? (
               <>🎉 You've qualified for FREE shipping!</>
             ) : (
-              <>Add GH₵{remaining.toFixed(2)} more for FREE shipping</>
+              <>Add CA${remaining.toFixed(2)} more for FREE shipping</>
             )}
           </span>
         </div>
@@ -39,19 +37,17 @@ export default function FreeShippingBar({ currentAmount, threshold = 200 }: Free
       </div>
 
       <div className="relative">
-        <div className={`w-full h-3 rounded-full overflow-hidden ${
-          isQualified ? 'bg-white/20' : 'bg-gray-200'
-        }`}>
+        <div className={`w-full h-3 rounded-full overflow-hidden ${isQualified ? 'bg-white/20' : 'bg-gray-200'
+          }`}>
           <div
-            className={`h-full transition-all duration-500 ${
-              isQualified 
-                ? 'bg-white' 
+            className={`h-full transition-all duration-500 ${isQualified
+                ? 'bg-white'
                 : 'bg-gradient-to-r from-amber-500 to-orange-500'
-            }`}
+              }`}
             style={{ width: `${percentage}%` }}
           />
         </div>
-        
+
         {isQualified && (
           <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-1">
             <div className="w-6 h-6 flex items-center justify-center bg-white rounded-full text-blue-600">

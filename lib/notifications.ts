@@ -109,25 +109,15 @@ export async function sendEmail({ to, subject, html }: { to: string; subject: st
 // Helper to format phone number for SMS (Ghana specific for now)
 // Helper to format phone number for SMS (Ghana specific for now)
 function formatPhoneNumber(phone: string): string {
-    // Remove all non-digit characters (including + for now)
+    // Remove all non-digit characters
     let cleaned = phone.replace(/\D/g, '');
 
-    // If starts with 0 (e.g. 024...), replace 0 with 233
-    if (cleaned.startsWith('0')) {
-        cleaned = '233' + cleaned.substring(1);
+    // If 10 digits, assume Canada/US and prepend 1
+    if (cleaned.length === 10) {
+        cleaned = '1' + cleaned;
     }
 
-    // If length is 9 (e.g. 24...), prepend 233
-    if (cleaned.length === 9) {
-        cleaned = '233' + cleaned;
-    }
-
-    // Ensure it starts with correct country code before prepending +
-    if (!cleaned.startsWith('233') && cleaned.length === 12) {
-        // Assuming it's some other format, but if it starts with 233, it's fine.
-    }
-
-    // Return with + prefix as per E.164
+    // Return with + prefix
     return '+' + cleaned;
 }
 
@@ -249,9 +239,9 @@ export async function sendOrderConfirmation(order: any) {
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f9fafb;border-radius:12px;overflow:hidden;margin:20px 0;">
   ${emailInfoRow('Order Number', `#${order_number || id}`)}
-  ${emailInfoRow('Order Date', new Date(created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }))}
+  ${emailInfoRow('Order Date', new Date(created_at).toLocaleDateString('en-CA', { day: 'numeric', month: 'long', year: 'numeric' }))}
   ${trackingNumber ? emailInfoRow('Tracking', trackingNumber) : ''}
-  ${emailInfoRow('Total', `GH₵${Number(total).toFixed(2)}`)}
+  ${emailInfoRow('Total', `CA$${Number(total).toFixed(2)}`)}
 </table>
 
 ${emailShippingNotes(shippingNotes)}
@@ -277,7 +267,7 @@ ${emailButton('Track Your Order', trackingUrl)}
   ${emailInfoRow('Order', `#${order_number || id}`)}
   ${emailInfoRow('Customer', `${name}`)}
   ${emailInfoRow('Email', email)}
-  ${emailInfoRow('Total', `GH₵${Number(total).toFixed(2)}`)}
+  ${emailInfoRow('Total', `CA$${Number(total).toFixed(2)}`)}
   ${trackingNumber ? emailInfoRow('Tracking', trackingNumber) : ''}
 </table>
 
@@ -482,12 +472,12 @@ export async function sendPaymentLink(order: any) {
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f9fafb;border-radius:12px;overflow:hidden;margin:20px 0;">
   ${emailInfoRow('Order Number', `#${order_number}`)}
-  ${emailInfoRow('Amount Due', `<span style="color:${BRAND.color};font-size:18px;font-weight:700;">GH₵${Number(total).toFixed(2)}</span>`)}
+  ${emailInfoRow('Amount Due', `<span style="color:${BRAND.color};font-size:18px;font-weight:700;">CA$${Number(total).toFixed(2)}</span>`)}
 </table>
 
 <p style="color:#374151;font-size:14px;line-height:1.6;margin:16px 0;">Click the button below to securely complete your payment. This link will remain active until your order is completed or cancelled.</p>
 
-${emailButton('Pay Now — GH₵' + Number(total).toFixed(2), paymentUrl, '#d97706')}
+${emailButton('Pay Now — CA$' + Number(total).toFixed(2), paymentUrl, '#d97706')}
 
 <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0;">Or copy this link: <a href="${paymentUrl}" style="color:${BRAND.color};">${paymentUrl}</a></p>
 `, `Complete payment for order #${order_number}`)
@@ -495,7 +485,7 @@ ${emailButton('Pay Now — GH₵' + Number(total).toFixed(2), paymentUrl, '#d977
 
     // SMS with payment link
     if (phone) {
-        const smsMessage = `Hi ${name}, complete your order #${order_number} (GH₵${Number(total).toFixed(2)}) here: ${paymentUrl}`;
+        const smsMessage = `Hi ${name}, complete your order #${order_number} (CA$${Number(total).toFixed(2)}) here: ${paymentUrl}`;
 
         await sendSMS({
             to: phone,

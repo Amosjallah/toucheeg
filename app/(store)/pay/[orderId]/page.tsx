@@ -130,7 +130,7 @@ export default function PaymentPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="text-2xl font-['Pacifico'] text-blue-700">TIWAA PERFUME STYLE HOUSE</span>
+            <span className="text-2xl font-bold tracking-tight text-blue-700">TOUCHEEGLOW</span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Complete Your Payment</h1>
           <p className="text-gray-600 mt-2">Hi {customerName}, your order is waiting for payment.</p>
@@ -146,23 +146,23 @@ export default function PaymentPage() {
           <div className="space-y-3 mb-6">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Subtotal</span>
-              <span className="text-gray-900">GH₵ {order?.subtotal?.toFixed(2)}</span>
+              <span className="text-gray-900">CA$ {order?.subtotal?.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Shipping</span>
-              <span className="text-gray-900">GH₵ {order?.shipping_total?.toFixed(2)}</span>
+              <span className="text-gray-900">CA$ {order?.shipping_total?.toFixed(2)}</span>
             </div>
             {order?.discount_total > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Discount</span>
-                <span className="text-green-600">-GH₵ {order?.discount_total?.toFixed(2)}</span>
+                <span className="text-green-600">-CA$ {order?.discount_total?.toFixed(2)}</span>
               </div>
             )}
           </div>
 
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <span className="text-lg font-semibold text-gray-900">Total</span>
-            <span className="text-2xl font-bold text-blue-700">GH₵ {order?.total?.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-blue-700">CA$ {order?.total?.toFixed(2)}</span>
           </div>
         </div>
 
@@ -218,7 +218,7 @@ export default function PaymentPage() {
           ) : (
             <>
               <i className="ri-secure-payment-line mr-2"></i>
-              Pay GH₵ {order?.total?.toFixed(2)} with Mobile Money
+              Pay CA$ {order?.total?.toFixed(2)} with E-Transfer
             </>
           )}
         </button>

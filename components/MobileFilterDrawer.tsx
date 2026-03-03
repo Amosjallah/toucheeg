@@ -79,7 +79,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-      
+
       <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[90vh] flex flex-col">
         <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 rounded-t-2xl">
           <div className="flex items-center justify-between">
@@ -135,8 +135,8 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-700"
               />
               <div className="flex items-center justify-between text-sm text-gray-700">
-                <span>GH₵{priceRange[0]}</span>
-                <span>GH₵{priceRange[1]}</span>
+                <span>CA${priceRange[0]}</span>
+                <span>CA${priceRange[1]}</span>
               </div>
             </div>
           </div>
@@ -148,11 +148,10 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
                 <button
                   key={size}
                   onClick={() => toggleSize(size)}
-                  className={`px-4 py-2 text-sm rounded-lg border transition-colors whitespace-nowrap ${
-                    selectedSizes.includes(size)
+                  className={`px-4 py-2 text-sm rounded-lg border transition-colors whitespace-nowrap ${selectedSizes.includes(size)
                       ? 'bg-blue-700 text-white border-blue-700'
                       : 'bg-white text-gray-700 border-gray-300 hover:border-blue-700'
-                  }`}
+                    }`}
                 >
                   {size}
                 </button>
@@ -167,11 +166,10 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
                 <button
                   key={color.name}
                   onClick={() => toggleColor(color.name)}
-                  className={`relative w-10 h-10 rounded-full border-2 transition-all ${
-                    selectedColors.includes(color.name)
+                  className={`relative w-10 h-10 rounded-full border-2 transition-all ${selectedColors.includes(color.name)
                       ? 'border-blue-700 scale-110'
                       : 'border-gray-300'
-                  }`}
+                    }`}
                   style={{ backgroundColor: color.hex }}
                 >
                   {selectedColors.includes(color.name) && (

@@ -139,7 +139,7 @@ export default function OrderHistory() {
                   <div className="w-full sm:w-auto">
                     <p className="text-xs text-gray-600 mb-1">Date</p>
                     <p className="font-semibold text-gray-900">
-                      {new Date(order.date).toLocaleDateString('en-GB', {
+                      {new Date(order.date).toLocaleDateString('en-CA', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric'
@@ -148,7 +148,7 @@ export default function OrderHistory() {
                   </div>
                   <div className="w-full sm:w-auto">
                     <p className="text-xs text-gray-600 mb-1">Total</p>
-                    <p className="font-bold text-blue-700">GH₵{order.total.toFixed(2)}</p>
+                    <p className="font-bold text-blue-700">CA${order.total.toFixed(2)}</p>
                   </div>
                 </div>
                 <div className="w-full sm:w-auto">
@@ -173,7 +173,7 @@ export default function OrderHistory() {
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
                       <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                      <p className="text-sm font-bold text-gray-900 mt-1">GH₵{item.price.toFixed(2)}</p>
+                      <p className="text-sm font-bold text-gray-900 mt-1">CA${item.price.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}

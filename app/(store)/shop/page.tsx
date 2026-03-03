@@ -306,7 +306,7 @@ function ShopContent() {
 
                     {/* Price Range */}
                     <div className="border-t border-gray-200 pt-8">
-                      <h3 className="font-semibold text-gray-900 mb-4">Max Price: GH₵{priceRange[1]}</h3>
+                      <h3 className="font-semibold text-gray-900 mb-4">Max Price: CA${priceRange[1]}</h3>
                       <div className="space-y-4">
                         <input
                           type="range"
@@ -321,8 +321,8 @@ function ShopContent() {
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-700"
                         />
                         <div className="flex items-center justify-between text-sm text-gray-600">
-                          <span>GH₵0</span>
-                          <span>GH₵5000+</span>
+                          <span>CA$0</span>
+                          <span>CA$5000+</span>
                         </div>
                       </div>
                     </div>

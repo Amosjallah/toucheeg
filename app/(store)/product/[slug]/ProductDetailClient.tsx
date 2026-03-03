@@ -255,7 +255,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     description: product.description,
     image: product.images[0],
     price: hasVariants ? minVariantPrice : product.price,
-    currency: 'GHS',
+    currency: 'CAD',
     sku: product.sku,
     rating: product.rating,
     reviewCount: product.reviewCount,
@@ -363,13 +363,13 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 <div className="flex items-baseline space-x-4 mb-6">
                   {hasVariants && !selectedVariant ? (
                     <span className="text-3xl lg:text-4xl font-bold text-gray-900">
-                      From GH₵{minVariantPrice.toFixed(2)}
+                      From CA${minVariantPrice.toFixed(2)}
                     </span>
                   ) : (
-                    <span className="text-3xl lg:text-4xl font-bold text-gray-900">GH₵{activePrice.toFixed(2)}</span>
+                    <span className="text-3xl lg:text-4xl font-bold text-gray-900">CA${activePrice.toFixed(2)}</span>
                   )}
                   {product.compare_at_price && product.compare_at_price > activePrice && (
-                    <span className="text-xl text-gray-400 line-through">GH₵{product.compare_at_price.toFixed(2)}</span>
+                    <span className="text-xl text-gray-400 line-through">CA${product.compare_at_price.toFixed(2)}</span>
                   )}
                 </div>
 
@@ -444,7 +444,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                       <div className="mb-8">
                         <label className="block font-semibold text-gray-900 mb-3">
                           Variant: {selectedVariant ? (
-                            <span className="text-blue-700 font-normal">{selectedVariant.name} — GH₵{selectedVariant.price?.toFixed(2)}</span>
+                            <span className="text-blue-700 font-normal">{selectedVariant.name} — CA${selectedVariant.price?.toFixed(2)}</span>
                           ) : (
                             <span className="text-red-500 font-normal text-sm">Please select a variant</span>
                           )}
@@ -471,7 +471,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                               >
                                 <span>{variant.name}</span>
                                 <span className={`text-xs mt-0.5 ${isSelected ? 'text-blue-600' : 'text-gray-500'}`}>
-                                  GH₵{(variant.price || product.price).toFixed(2)}
+                                  CA${(variant.price || product.price).toFixed(2)}
                                 </span>
                               </button>
                             );
@@ -486,7 +486,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                       <div className="mb-8">
                         <label className="block font-semibold text-gray-900 mb-3">
                           Size / Type: {selectedVariant ? (
-                            <span className="text-blue-700 font-normal">{selectedVariant.name} — GH₵{selectedVariant.price?.toFixed(2)}</span>
+                            <span className="text-blue-700 font-normal">{selectedVariant.name} — CA${selectedVariant.price?.toFixed(2)}</span>
                           ) : (
                             <span className="text-red-500 font-normal text-sm">Please select</span>
                           )}
@@ -513,7 +513,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                               >
                                 <span>{variant.name}</span>
                                 <span className={`text-xs mt-0.5 ${isSelected ? 'text-blue-600' : 'text-gray-500'}`}>
-                                  GH₵{(variant.price || product.price).toFixed(2)}
+                                  CA$ {(variant.price || product.price).toFixed(2)}
                                 </span>
                               </button>
                             );

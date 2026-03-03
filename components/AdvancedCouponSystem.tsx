@@ -18,59 +18,59 @@ interface AdvancedCouponSystemProps {
   appliedCoupon: Coupon | null;
 }
 
-export default function AdvancedCouponSystem({ 
-  subtotal, 
-  onApply, 
+export default function AdvancedCouponSystem({
+  subtotal,
+  onApply,
   onRemove,
-  appliedCoupon 
+  appliedCoupon
 }: AdvancedCouponSystemProps) {
   const [couponCode, setCouponCode] = useState('');
   const [error, setError] = useState('');
   const [showAvailable, setShowAvailable] = useState(false);
 
   const availableCoupons: Coupon[] = [
-    { 
-      code: 'WELCOME10', 
-      discount: 10, 
+    {
+      code: 'WELCOME10',
+      discount: 10,
       type: 'percentage',
       minPurchase: 100,
-      description: '10% off on orders over GH₵100'
+      description: '10% off on orders over CA$100'
     },
-    { 
-      code: 'SAVE20', 
-      discount: 20, 
+    {
+      code: 'SAVE20',
+      discount: 20,
       type: 'percentage',
       minPurchase: 200,
       maxDiscount: 50,
-      description: '20% off (max GH₵50) on orders over GH₵200'
+      description: '20% off (max CA$50) on orders over CA$200'
     },
-    { 
-      code: 'FREE50', 
-      discount: 50, 
+    {
+      code: 'FREE50',
+      discount: 50,
       type: 'fixed',
       minPurchase: 500,
-      description: 'GH₵50 off on orders over GH₵500'
+      description: 'CA$50 off on orders over CA$500'
     },
-    { 
-      code: 'NEWCUSTOMER', 
-      discount: 15, 
+    {
+      code: 'NEWCUSTOMER',
+      discount: 15,
       type: 'percentage',
       maxDiscount: 30,
-      description: '15% off (max GH₵30) for new customers'
+      description: '15% off (max CA$30) for new customers'
     }
   ];
 
   const handleApply = () => {
     setError('');
     const coupon = availableCoupons.find(c => c.code.toLowerCase() === couponCode.toLowerCase());
-    
+
     if (!coupon) {
       setError('Invalid coupon code');
       return;
     }
 
     if (coupon.minPurchase && subtotal < coupon.minPurchase) {
-      setError(`Minimum purchase of GH₵${coupon.minPurchase} required`);
+      setError(`Minimum purchase of CA$${coupon.minPurchase} required`);
       return;
     }
 
@@ -81,7 +81,7 @@ export default function AdvancedCouponSystem({
 
   const handleQuickApply = (coupon: Coupon) => {
     if (coupon.minPurchase && subtotal < coupon.minPurchase) {
-      setError(`Add GH₵${(coupon.minPurchase - subtotal).toFixed(2)} more to use this coupon`);
+      setError(`Add CA$${(coupon.minPurchase - subtotal).toFixed(2)} more to use this coupon`);
       return;
     }
     setError('');
@@ -140,11 +140,10 @@ export default function AdvancedCouponSystem({
                 return (
                   <div
                     key={coupon.code}
-                    className={`bg-white rounded-lg p-4 border-2 transition-all ${
-                      isEligible
+                    className={`bg-white rounded-lg p-4 border-2 transition-all ${isEligible
                         ? 'border-blue-200 hover:border-blue-300'
                         : 'border-gray-200 opacity-60'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
@@ -153,7 +152,7 @@ export default function AdvancedCouponSystem({
                         </span>
                         {!isEligible && (
                           <span className="text-xs text-gray-500">
-                            Add GH₵{needed.toFixed(2)} more
+                            Add CA${needed.toFixed(2)} more
                           </span>
                         )}
                       </div>

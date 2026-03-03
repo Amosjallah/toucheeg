@@ -11,28 +11,28 @@ export default function AboutPage() {
   const { getSetting } = useCMS();
   const [activeTab, setActiveTab] = useState('story');
 
-  const siteName = getSetting('site_name') || 'TIWAA PERFUME STYLE HOUSE';
+  const siteName = getSetting('site_name') || 'TOUCHEEGLOW';
 
   const values = [
     {
       icon: 'ri-verified-badge-line',
       title: 'Verified Quality',
-      description: 'Every product is personally inspected before it reaches you. Whether sourced locally or imported from China, quality comes first.'
+      description: 'Every product is personally inspected before it reaches you. Quality comes first.'
     },
     {
       icon: 'ri-money-dollar-circle-line',
       title: 'Unbeatable Prices',
-      description: 'By sourcing directly from manufacturers and local suppliers, we cut out the middleman and pass the savings to you.'
+      description: 'By sourcing directly from manufacturers, we cut out the middleman and pass the savings to you.'
     },
     {
       icon: 'ri-global-line',
-      title: 'Local & Imported',
-      description: 'The best of both worlds — handpicked local products alongside carefully selected imports from trusted Chinese suppliers.'
+      title: 'Premium Selection',
+      description: 'The best products carefully selected from trusted global suppliers.'
     },
     {
       icon: 'ri-truck-line',
       title: 'Nationwide Delivery',
-      description: 'Fast and reliable delivery across Ghana. Based in Accra, we ship to every region with care and speed.'
+      description: 'Fast and reliable delivery across Canada. Based in Toronto, we ship to every province with care and speed.'
     }
   ];
 
@@ -40,7 +40,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         title="More Than Just A Brand"
-        subtitle="From Satellite, Accra — perfumes wholesale and retail."
+        subtitle="Based in Canada — premium skincare wholesale and retail."
         backgroundImage="/skincare-aesthetic.jpg"
       />
 
@@ -72,13 +72,13 @@ export default function AboutPage() {
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-6">How It All Started</h2>
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 <p>
-                  <strong>TIWAA PERFUME STYLE HOUSE</strong> sells perfumes — wholesale and retail. Based in Satellite, Accra, we offer a curated range of fragrances at competitive prices for both resellers and individual customers.
+                  <strong>TOUCHEEGLOW</strong> provides premium skincare — wholesale and retail. Based in Canada, we offer a curated range of high-quality products at competitive prices for both resellers and individual customers.
                 </p>
                 <p>
-                  We focus on quality and value. Whether you're stocking up for your business or shopping for yourself, we handpick our perfumes to deliver genuine products and great prices.
+                  We focus on quality and value. Whether you're stocking up for your business or shopping for yourself, we handpick our skincare products to deliver genuine results and great prices.
                 </p>
                 <p>
-                  Call us on <strong>054 501 0949</strong> or WhatsApp <strong>055 416 9992</strong>. We're here to help with orders and enquiries.
+                  Contact us for any enquiries. We're here to help with orders and provide the best skincare solutions.
                 </p>
               </div>
             </div>
@@ -86,15 +86,14 @@ export default function AboutPage() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-gray-100 relative flex items-center justify-center">
                 <img
                   src="/tiwa logo.png"
-                  alt="TIWAA PERFUME STYLE HOUSE"
+                  alt="TOUCHEEGLOW"
                   className="w-2/3 h-auto object-contain opacity-80"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
-                  <p className="text-white font-bold text-xl">TIWAA PERFUME STYLE HOUSE</p>
-                  <p className="text-blue-200">Perfumes · Wholesale & Retail · Satellite, Accra</p>
+                  <p className="text-white font-bold text-xl">TOUCHEEGLOW</p>
+                  <p className="text-blue-200">Skincare · Wholesale & Retail · Canada</p>
                 </div>
               </div>
-              {/* Decorative Element */}
               <div className="absolute -z-10 top-10 -right-10 w-full h-full border-4 border-blue-100 rounded-2xl hidden md:block"></div>
             </div>
           </div>
@@ -108,7 +107,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">Everything in One Place</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                We stock a wide range of perfumes and fragrances. Our catalogue is constantly updated with new arrivals for both wholesale and retail customers.
+                We stock a wide range of premium skincare products. Our catalogue is constantly updated with new arrivals for both wholesale and retail customers.
               </p>
             </div>
             <div className="bg-amber-50 p-10 rounded-3xl border border-amber-100">
@@ -117,19 +116,18 @@ export default function AboutPage() {
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">Empowering Resellers</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                We support small businesses and resellers with competitive bulk pricing. Many of our products are available at wholesale rates, helping entrepreneurs across Ghana grow their own ventures.
+                We support small businesses and resellers with competitive bulk pricing. Many of our products are available at wholesale rates, helping entrepreneurs across Canada grow their own ventures.
               </p>
             </div>
           </div>
         )}
       </div>
 
-      {/* Values Section */}
       <div className="bg-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Shop With Us?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Trusted by hundreds of customers and resellers across Ghana.</p>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Trusted by hundreds of customers and resellers across Canada.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
@@ -145,12 +143,11 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="bg-blue-900 py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to shop smarter?</h2>
           <p className="text-xl text-blue-100 mb-10 leading-relaxed max-w-2xl mx-auto">
-            Browse our perfumes — wholesale and retail. Call 054 501 0949 or WhatsApp 055 416 9992.
+            Browse our premium skincare — wholesale and retail. We offer fast shipping across Canada and the best bulk prices.
           </p>
           <Link
             href="/shop"

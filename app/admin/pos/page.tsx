@@ -54,10 +54,10 @@ export default function POSPage() {
         region: ''
     });
 
-    const ghanaRegions = [
-        'Greater Accra', 'Ashanti', 'Western', 'Central', 'Eastern',
-        'Northern', 'Volta', 'Upper East', 'Upper West', 'Brong-Ahafo',
-        'Ahafo', 'Bono', 'Bono East', 'North East', 'Savannah', 'Oti', 'Western North'
+    const canadaProvinces = [
+        'Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador',
+        'Nova Scotia', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan',
+        'Northwest Territories', 'Nunavut', 'Yukon'
     ];
 
     useEffect(() => {
@@ -187,9 +187,9 @@ export default function POSPage() {
     const validateCheckout = (): string | null => {
         if (cart.length === 0) return 'Cart is empty';
 
-        if (paymentMethod === 'momo') {
+        if (paymentMethod === 'etransfer') {
             const phone = getOrderPhone();
-            if (!phone) return 'Phone number is required for Mobile Money payment';
+            if (!phone) return 'Phone number is required for E-Transfer payment';
         }
 
         if (paymentMethod === 'cash') {
@@ -264,14 +264,14 @@ export default function POSPage() {
                     phone: customerPhone,
                     status: isCashOrCard ? 'processing' : 'pending',
                     payment_status: isCashOrCard ? 'paid' : 'pending',
-                    currency: 'GHS',
+                    currency: 'CAD',
                     subtotal: cartTotal,
                     tax_total: tax,
                     shipping_total: 0,
                     discount_total: 0,
                     total: grandTotal,
                     shipping_method: deliveryMethod,
-                    payment_method: paymentMethod === 'momo' ? 'moolre' : paymentMethod,
+                    payment_method: paymentMethod === 'etransfer' ? 'moolre' : paymentMethod,
                     shipping_address: addressData,
                     billing_address: addressData,
                     metadata: {
@@ -368,8 +368,8 @@ export default function POSPage() {
                 }
             }
 
-            // 5. If Momo — initiate Moolre payment
-            if (paymentMethod === 'momo') {
+            // 5. If E-Transfer — initiate Moolre payment
+            if (paymentMethod === 'etransfer') {
                 const paymentRes = await fetch('/api/payment/moolre', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -383,7 +383,7 @@ export default function POSPage() {
                 const paymentResult = await paymentRes.json();
 
                 if (!paymentResult.success) {
-                    throw new Error(paymentResult.message || 'Failed to initiate Mobile Money payment');
+                    throw new Error(paymentResult.message || 'Failed to initiate E-Transfer payment');
                 }
 
                 // Show completed with payment link
@@ -490,7 +490,7 @@ export default function POSPage() {
                                     <div className="p-3 flex flex-col flex-1">
                                         <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-auto">{product.name}</h3>
                                         <div className="flex items-center justify-between mt-2 pt-2">
-                                            <span className="text-blue-700 font-bold">GH₵{product.price.toFixed(2)}</span>
+                                            <span className="text-blue-700 font-bold">CA${product.price.toFixed(2)}</span>
                                             <button className="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center group-hover:bg-blue-700 group-hover:text-white transition-colors">
                                                 <i className="ri-add-line"></i>
                                             </button>
@@ -514,7 +514,7 @@ export default function POSPage() {
                                 Items
                             </span>
                             <span>View Cart</span>
-                            <span>GH₵{grandTotal.toFixed(2)}</span>
+                            <span>CA${grandTotal.toFixed(2)}</span>
                         </button>
                     </div>
                 )}
@@ -570,7 +570,7 @@ export default function POSPage() {
                                                 <i className="ri-add-line text-xs"></i>
                                             </button>
                                         </div>
-                                        <p className="text-sm font-bold text-gray-900">GH₵{(item.price * item.cartQuantity).toFixed(2)}</p>
+                                        <p className="text-sm font-bold text-gray-900">CA${(item.price * item.cartQuantity).toFixed(2)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -583,15 +583,15 @@ export default function POSPage() {
                     <div className="space-y-1 text-sm">
                         <div className="flex justify-between text-gray-600">
                             <span>Subtotal</span>
-                            <span>GH₵{cartTotal.toFixed(2)}</span>
+                            <span>CA${cartTotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>Tax (0%)</span>
-                            <span>GH₵0.00</span>
+                            <span>CA$0.00</span>
                         </div>
                         <div className="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t border-gray-200 mt-2">
                             <span>Total</span>
-                            <span>GH₵{grandTotal.toFixed(2)}</span>
+                            <span>CA${grandTotal.toFixed(2)}</span>
                         </div>
                     </div>
 
@@ -608,7 +608,7 @@ export default function POSPage() {
                             disabled={cart.length === 0}
                             className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold text-sm shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Charge GH₵{grandTotal.toFixed(2)}
+                            Charge CA${grandTotal.toFixed(2)}
                         </button>
                     </div>
                 </div>
@@ -633,7 +633,7 @@ export default function POSPage() {
                                     {!completedOrder.paymentPending && paymentMethod === 'cash' && changeDue > 0 && (
                                         <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
                                             <p className="text-sm text-blue-700">Change Due</p>
-                                            <p className="text-2xl font-bold text-blue-800">GH₵{changeDue.toFixed(2)}</p>
+                                            <p className="text-2xl font-bold text-blue-800">CA${changeDue.toFixed(2)}</p>
                                         </div>
                                     )}
 
@@ -699,7 +699,7 @@ export default function POSPage() {
                                     {/* Total Display */}
                                     <div className="text-center py-4 bg-blue-50 rounded-xl border border-blue-100">
                                         <p className="text-sm text-blue-800 uppercase tracking-wide font-semibold">Amount to Pay</p>
-                                        <p className="text-4xl font-extrabold text-blue-700 mt-1">GH₵{grandTotal.toFixed(2)}</p>
+                                        <p className="text-4xl font-extrabold text-blue-700 mt-1">CA${grandTotal.toFixed(2)}</p>
                                     </div>
 
                                     {/* Customer Select */}
@@ -780,10 +780,10 @@ export default function POSPage() {
                                                     />
                                                     <input
                                                         type="tel"
-                                                        placeholder={paymentMethod === 'momo' ? 'Phone (Required) *' : 'Phone'}
+                                                        placeholder={paymentMethod === 'etransfer' ? 'Phone (Required) *' : 'Phone'}
                                                         value={guestDetails.phone}
                                                         onChange={e => setGuestDetails({ ...guestDetails, phone: e.target.value })}
-                                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm ${paymentMethod === 'momo' && !guestDetails.phone ? 'border-amber-400 bg-amber-50' : 'border-gray-300'
+                                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm ${paymentMethod === 'etransfer' && !guestDetails.phone ? 'border-amber-400 bg-amber-50' : 'border-gray-300'
                                                             }`}
                                                     />
                                                 </div>
@@ -850,8 +850,8 @@ export default function POSPage() {
                                                         onChange={e => setGuestDetails({ ...guestDetails, region: e.target.value })}
                                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                                                     >
-                                                        <option value="">Select Region *</option>
-                                                        {ghanaRegions.map(r => (
+                                                        <option value="">Select Province *</option>
+                                                        {canadaProvinces.map(r => (
                                                             <option key={r} value={r}>{r}</option>
                                                         ))}
                                                     </select>
@@ -867,7 +867,7 @@ export default function POSPage() {
                                             {[
                                                 { key: 'cash', label: 'Cash', icon: 'ri-money-cny-circle-line' },
                                                 { key: 'card', label: 'Card', icon: 'ri-bank-card-line' },
-                                                { key: 'momo', label: 'MoMo', icon: 'ri-smartphone-line' }
+                                                { key: 'etransfer', label: 'E-Transfer', icon: 'ri-smartphone-line' }
                                             ].map(method => (
                                                 <button
                                                     key={method.key}
@@ -889,7 +889,7 @@ export default function POSPage() {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Amount Tendered</label>
                                             <div className="relative">
-                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">GH₵</span>
+                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">CA$</span>
                                                 <input
                                                     type="number"
                                                     value={amountTendered}
@@ -900,7 +900,7 @@ export default function POSPage() {
                                                 />
                                             </div>
                                             {changeDue > 0 && (
-                                                <p className="text-right text-blue-600 font-bold mt-2">Change: GH₵{changeDue.toFixed(2)}</p>
+                                                <p className="text-right text-blue-600 font-bold mt-2">Change: CA${changeDue.toFixed(2)}</p>
                                             )}
                                             {changeDue < 0 && amountTendered && (
                                                 <p className="text-right text-red-500 font-medium mt-2">Insufficient amount</p>
@@ -913,21 +913,21 @@ export default function POSPage() {
                                                         onClick={() => setAmountTendered(amount.toString())}
                                                         className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
                                                     >
-                                                        GH₵{amount.toFixed(2)}
+                                                        CA${amount.toFixed(2)}
                                                     </button>
                                                 ))}
                                             </div>
                                         </div>
                                     )}
 
-                                    {/* MoMo info */}
-                                    {paymentMethod === 'momo' && (
+                                    {/* E-Transfer info */}
+                                    {paymentMethod === 'etransfer' && (
                                         <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                                             <div className="flex items-start space-x-2">
                                                 <i className="ri-information-line text-amber-600 mt-0.5"></i>
                                                 <div className="text-sm text-amber-800">
-                                                    <p className="font-semibold">Mobile Money Payment</p>
-                                                    <p className="mt-1">A Moolre payment link will be generated. The customer can pay via their phone, or you can open the link on your device.</p>
+                                                    <p className="font-semibold">E-Transfer Payment</p>
+                                                    <p className="mt-1">A payment link will be generated. The customer can pay via their phone, or you can open the link on your device.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -958,7 +958,7 @@ export default function POSPage() {
                                                 <i className="ri-loader-4-line animate-spin"></i>
                                                 <span>Processing...</span>
                                             </>
-                                        ) : paymentMethod === 'momo' ? (
+                                        ) : paymentMethod === 'etransfer' ? (
                                             <>
                                                 <i className="ri-smartphone-line"></i>
                                                 <span>Generate Payment Link</span>

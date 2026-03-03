@@ -239,23 +239,23 @@ function OrderSuccessContent() {
                         </p>
                       )}
                     </div>
-                    <p className="font-bold text-gray-900">GH₵{item.unit_price.toFixed(2)}</p>
+                    <p className="font-bold text-gray-900">CA${item.unit_price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
               <div className="border-t border-gray-200 mt-4 pt-4">
                 <div className="flex justify-between text-sm text-gray-600 mb-2">
                   <span>Subtotal</span>
-                  <span>GH₵{order.subtotal.toFixed(2)}</span>
+                  <span>CA${order.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-600 mb-2">
                   <span>Shipping</span>
-                  <span>GH₵{order.shipping_total.toFixed(2)}</span>
+                  <span>CA${order.shipping_total.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between text-xl font-bold text-gray-900 border-t border-gray-200 pt-2">
                   <span>Total Paid</span>
-                  <span>GH₵{order.total.toFixed(2)}</span>
+                  <span>CA${order.total.toFixed(2)}</span>
                 </div>
               </div>
             </div>

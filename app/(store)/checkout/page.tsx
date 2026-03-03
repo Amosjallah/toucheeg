@@ -34,24 +34,20 @@ export default function CheckoutPage() {
   });
 
   // Ghana Regions for dropdown
-  const ghanaRegions = [
-    'Greater Accra',
-    'Ashanti',
-    'Western',
-    'Central',
-    'Eastern',
-    'Northern',
-    'Volta',
-    'Upper East',
-    'Upper West',
-    'Brong-Ahafo',
-    'Ahafo',
-    'Bono',
-    'Bono East',
-    'North East',
-    'Savannah',
-    'Oti',
-    'Western North'
+  const canadaProvinces = [
+    'Alberta',
+    'British Columbia',
+    'Manitoba',
+    'New Brunswick',
+    'Newfoundland and Labrador',
+    'Nova Scotia',
+    'Ontario',
+    'Prince Edward Island',
+    'Quebec',
+    'Saskatchewan',
+    'Northwest Territories',
+    'Nunavut',
+    'Yukon'
   ];
 
   const [deliveryMethod, setDeliveryMethod] = useState('pickup');
@@ -153,7 +149,7 @@ export default function CheckoutPage() {
           phone: shippingData.phone,
           status: 'pending',
           payment_status: 'pending',
-          currency: 'GHS',
+          currency: 'CAD',
           subtotal: subtotal,
           tax_total: tax,
           shipping_total: shippingCost,
@@ -178,20 +174,20 @@ export default function CheckoutPage() {
       // 2. Create Order Items (with UUID validation)
       // Helper to check if string is a valid UUID
       const isValidUUID = (str: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
-      
+
       // Build order items, resolving slugs to UUIDs if needed
       const orderItems = [];
-      
+
       // Batch-fetch product metadata (for preorder_shipping etc.)
       const productIds = cart.map(item => item.id).filter(id => isValidUUID(id));
       const { data: productsData } = productIds.length > 0
         ? await supabase.from('products').select('id, metadata').in('id', productIds)
         : { data: [] };
       const productMetaMap = new Map((productsData || []).map((p: any) => [p.id, p.metadata]));
-      
+
       for (const item of cart) {
         let productId = item.id;
-        
+
         // If id is not a valid UUID, it might be a slug - try to resolve it
         if (!isValidUUID(productId)) {
           const { data: product } = await supabase
@@ -199,7 +195,7 @@ export default function CheckoutPage() {
             .select('id, metadata')
             .or(`slug.eq.${productId},id.eq.${productId}`)
             .single();
-          
+
           if (product) {
             productId = product.id;
             productMetaMap.set(product.id, product.metadata);
@@ -207,9 +203,9 @@ export default function CheckoutPage() {
             throw new Error(`Product not found: ${item.name}. Please remove it from your cart and try again.`);
           }
         }
-        
+
         const prodMeta = productMetaMap.get(productId);
-        
+
         orderItems.push({
           order_id: order.id,
           product_id: productId,
@@ -447,7 +443,7 @@ export default function CheckoutPage() {
                         onChange={(e) => setShippingData({ ...shippingData, phone: e.target.value })}
                         className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'
                           }`}
-                        placeholder="+233 XX XXX XXXX"
+                        placeholder="+1 XXX XXX XXXX"
                       />
                       {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone}</p>}
                     </div>
@@ -478,13 +474,13 @@ export default function CheckoutPage() {
                           onChange={(e) => setShippingData({ ...shippingData, city: e.target.value })}
                           className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.city ? 'border-red-500' : 'border-gray-300'
                             }`}
-                          placeholder="Accra"
+                          placeholder="Toronto"
                         />
                         {errors.city && <p className="text-sm text-red-600 mt-1">{errors.city}</p>}
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-gray-900 mb-2">
-                          Region *
+                          Province *
                         </label>
                         <select
                           value={shippingData.region}
@@ -492,8 +488,8 @@ export default function CheckoutPage() {
                           className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white ${errors.region ? 'border-red-500' : 'border-gray-300'
                             }`}
                         >
-                          <option value="">Select Region</option>
-                          {ghanaRegions.map((region) => (
+                          <option value="">Select Province</option>
+                          {canadaProvinces.map((region) => (
                             <option key={region} value={region}>{region}</option>
                           ))}
                         </select>
@@ -617,7 +613,7 @@ export default function CheckoutPage() {
                           Processing...
                         </>
                       ) : (
-                        'Pay with Mobile Money'
+                        'Pay with E-Transfer'
                       )}
                     </button>
                   </div>

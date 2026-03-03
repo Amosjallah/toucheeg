@@ -79,7 +79,7 @@ export default function ProductCard({
   const discount = originalPrice ? Math.round((1 - displayPrice / originalPrice) * 100) : 0;
   const MAX_SWATCHES = 5;
 
-  const formatPrice = (val: number) => `GH\u20B5${val.toFixed(2)}`;
+  const formatPrice = (val: number) => `CA$${val.toFixed(2)}`;
 
   return (
     <div className="group bg-transparent rounded-lg h-full flex flex-col hover-lift">
@@ -149,11 +149,10 @@ export default function ProductCard({
                   e.preventDefault();
                   setActiveColor(activeColor === color.name ? null : color.name);
                 }}
-                className={`w-4 h-4 rounded-full border transition-all duration-200 flex-shrink-0 ${
-                  activeColor === color.name
+                className={`w-4 h-4 rounded-full border transition-all duration-200 flex-shrink-0 ${activeColor === color.name
                     ? 'ring-2 ring-offset-1 ring-blue-600 scale-110'
                     : 'hover:scale-110'
-                } ${color.hex === '#FFFFFF' ? 'border-gray-300' : 'border-transparent'}`}
+                  } ${color.hex === '#FFFFFF' ? 'border-gray-300' : 'border-transparent'}`}
                 style={{ backgroundColor: color.hex }}
               />
             ))}

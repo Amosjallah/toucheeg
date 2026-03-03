@@ -31,7 +31,7 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
 
     // Auto-generate SKU function
     const generateSku = () => {
-        const prefix = 'TIWAA'; // TIWAA PERFUME STYLE HOUSE
+        const prefix = 'TOUCHEE'; // TOUCHEEGLOW
         const timestamp = Date.now().toString(36).toUpperCase().slice(-4);
         const random = Math.random().toString(36).substring(2, 6).toUpperCase();
         return `${prefix}-${timestamp}-${random}`;
@@ -550,10 +550,10 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                        Price (GH₵) *
+                                        Price (CA$) *
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-semibold">GH₵</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-semibold">CA$</span>
                                         <input
                                             type="number"
                                             value={price}
@@ -567,10 +567,10 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
 
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                        Compare at Price (GH₵)
+                                        Compare at Price (CA$)
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-semibold">GH₵</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-semibold">CA$</span>
                                         <input
                                             type="number"
                                             value={comparePrice}
@@ -588,7 +588,7 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                                 <p className="text-blue-900 font-semibold mb-1">Discount Calculation</p>
                                 {price && comparePrice && parseFloat(comparePrice) > parseFloat(price) ? (
                                     <p className="text-blue-800">
-                                        Savings: GH₵ {(parseFloat(comparePrice) - parseFloat(price)).toFixed(2)}
+                                        Savings: CA$ {(parseFloat(comparePrice) - parseFloat(price)).toFixed(2)}
                                         <span className="ml-2">
                                             ({(((parseFloat(comparePrice) - parseFloat(price)) / parseFloat(comparePrice)) * 100).toFixed(0)}% off)
                                         </span>
@@ -717,8 +717,8 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                                                 key={color.name}
                                                 onClick={() => toggleColor(color)}
                                                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg border-2 transition-all text-sm font-medium ${isSelected
-                                                        ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600'
-                                                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                                                    ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600'
+                                                    : 'border-gray-200 hover:border-gray-300 bg-white'
                                                     }`}
                                                 title={color.name}
                                             >
@@ -796,8 +796,8 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                                                 key={size}
                                                 onClick={() => toggleSize(size)}
                                                 className={`px-5 py-2.5 rounded-lg border-2 font-semibold text-sm transition-all ${isSelected
-                                                        ? 'border-blue-600 bg-blue-50 text-blue-800 ring-1 ring-blue-600'
-                                                        : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'
+                                                    ? 'border-blue-600 bg-blue-50 text-blue-800 ring-1 ring-blue-600'
+                                                    : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'
                                                     }`}
                                             >
                                                 {size}
@@ -883,7 +883,7 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                                                     {selectedSizes.length > 0 && (
                                                         <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Size</th>
                                                     )}
-                                                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Price (GH₵)</th>
+                                                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Price (CA$)</th>
                                                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Stock</th>
                                                 </tr>
                                             </thead>
