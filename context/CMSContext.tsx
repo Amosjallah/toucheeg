@@ -69,7 +69,7 @@ interface CMSContextType {
 const defaultSettings: SiteSettings = {
     site_name: 'TOUCHEEGLOW',
     site_tagline: 'Luxury Skincare — Canada',
-    site_logo: '/tiwa logo.png',
+    site_logo: '/touchee-logo.png',
     contact_email: 'tiwaperfumestyle@gmail.com',
     contact_phone: '0545010949',
     contact_whatsapp: '0554169992',

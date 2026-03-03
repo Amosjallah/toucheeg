@@ -13,7 +13,7 @@ export const viewport: Viewport = {
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://toucheeglow.com';
 
-// Favicon & OG: uses tiwa logo.png from public
+// Favicon & OG: uses touchee-logo.png from public
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -48,10 +48,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/tiwa logo.png', sizes: 'any', type: 'image/png' },
+      { url: '/touchee-logo.png', sizes: 'any', type: 'image/png' },
     ],
-    shortcut: '/tiwa logo.png',
-    apple: '/tiwa logo.png',
+    shortcut: '/touchee-logo.png',
+    apple: '/touchee-logo.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     siteName: "TOUCHEEGLOW",
     images: [
       {
-        url: "/tiwa logo.png",
+        url: "/touchee-logo.png",
         width: 1200,
         height: 630,
         alt: "TOUCHEEGLOW — Luxury Skincare",
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "TOUCHEEGLOW | Luxury Skincare",
     description: "Premium luxury skincare products. Based in Canada.",
-    images: ["/tiwa logo.png"],
+    images: ["/touchee-logo.png"],
   },
   alternates: {
     canonical: siteUrl,
@@ -119,12 +119,12 @@ export default function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
 
         {/* Favicon from public folder */}
-        <link rel="icon" href="/tiwa logo.png" type="image/png" sizes="any" />
-        <link rel="shortcut icon" href="/tiwa logo.png" />
+        <link rel="icon" href="/touchee-logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/touchee-logo.png" />
 
         {/* Apple Touch Icons from public */}
-        <link rel="apple-touch-icon" href="/tiwa logo.png" />
-        <link rel="apple-touch-startup-image" href="/tiwa logo.png" />
+        <link rel="apple-touch-icon" href="/touchee-logo.png" />
+        <link rel="apple-touch-startup-image" href="/touchee-logo.png" />
 
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
@@ -144,7 +144,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "TOUCHEEGLOW",
               "url": siteUrl,
-              "logo": siteUrl + "/tiwa%20logo.png",
+              "logo": siteUrl + "/touchee-logo.png",
               "description": "Premium luxury skincare products. Based in Canada.",
               "address": {
                 "@type": "PostalAddress",

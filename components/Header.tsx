@@ -19,7 +19,7 @@ export default function Header() {
   const { getSetting } = useCMS();
 
   const siteName = getSetting('site_name') || 'TOUCHEEGLOW';
-  const headerLogo = getSetting('site_logo') || '/tiwa logo.png';
+  const headerLogo = getSetting('site_logo') || '/touchee-logo.png';
 
   useEffect(() => {
     // Wishlist logic

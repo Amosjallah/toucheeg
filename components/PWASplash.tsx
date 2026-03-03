@@ -29,7 +29,7 @@ export default function PWASplash() {
     <div className="pwa-splash" aria-hidden="true">
       <div className="pwa-splash-logo mb-6">
         <img
-          src="/tiwa logo.png"
+          src="/touchee-logo.png"
           alt="TIWAA PERFUME STYLE HOUSE"
           className="w-24 h-24 object-contain brightness-0 invert"
         />

@@ -30,7 +30,7 @@ export function generateMetadata({
   noindex = false
 }: SEOProps): Metadata {
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://toucheeglow.com';
-  const defaultOgImage = `${siteUrl}/tiwa%20logo.png`;
+  const defaultOgImage = `${siteUrl}/touchee-logo.png`;
   const resolvedOgImage = ogImage || defaultOgImage;
   const siteName = 'TOUCHEEGLOW';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
@@ -167,8 +167,8 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'TOUCHEEGLOW',
     url: siteUrl,
-    logo: `${siteUrl}/tiwa%20logo.png`,
-    image: `${siteUrl}/tiwa%20logo.png`,
+    logo: `${siteUrl}/touchee-logo.png`,
+    image: `${siteUrl}/touchee-logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+1-XXX-XXX-XXXX',

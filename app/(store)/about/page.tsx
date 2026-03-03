@@ -85,7 +85,7 @@ export default function AboutPage() {
             <div className="relative">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-gray-100 relative flex items-center justify-center">
                 <img
-                  src="/tiwa logo.png"
+                  src="/touchee-logo.png"
                   alt="TOUCHEEGLOW"
                   className="w-2/3 h-auto object-contain opacity-80"
                 />

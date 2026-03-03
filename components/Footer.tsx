@@ -32,7 +32,7 @@ export default function Footer() {
   const contactPhone = getSetting('contact_phone') || '+1 800 555 0199';
   const contactWhatsapp = getSetting('contact_whatsapp') || '+1 800 555 0199';
   const contactAddress = getSetting('contact_address') || 'Toronto, Canada';
-  const siteLogo = getSetting('site_logo') || '/tiwa logo.png';
+  const siteLogo = getSetting('site_logo') || '/touchee-logo.png';
   const socialFacebook = getSetting('social_facebook') || '';
   const socialInstagram = getSetting('social_instagram') || '';
   const socialTwitter = getSetting('social_twitter') || '';
