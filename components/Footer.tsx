@@ -56,7 +56,7 @@ export default function Footer() {
             {/* Brand Column */}
             <div className="lg:col-span-1 space-y-6">
               <Link href="/" className="inline-block group">
-                <img src={siteLogo} alt={siteName} className="h-16 w-auto object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300" />
+                <img src={siteLogo} alt={siteName} className="h-28 w-auto object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-300" />
               </Link>
               <p className="text-blue-200/60 leading-relaxed text-sm">
                 {siteTagline} {contactAddress}. Call {contactPhone} · WhatsApp {contactWhatsapp}

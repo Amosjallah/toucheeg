@@ -87,7 +87,7 @@ export default function AboutPage() {
                 <img
                   src="/touchee-logo.png"
                   alt="TOUCHEEGLOW"
-                  className="w-2/3 h-auto object-contain opacity-80"
+                  className="w-4/5 h-auto object-contain drop-shadow-2xl"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
                   <p className="text-white font-bold text-xl">TOUCHEEGLOW</p>
