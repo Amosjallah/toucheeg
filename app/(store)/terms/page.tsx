@@ -300,7 +300,7 @@ export default function TermsPage() {
                   <i className="ri-mail-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:tiwaperfumestyle@gmail.com" className="text-blue-700 hover:underline">tiwaperfumestyle@gmail.com</a>
+                    <a href="mailto:toucheeglow@gmail.com" className="text-blue-700 hover:underline">toucheeglow@gmail.com</a>
                   </div>
                 </div>
 
@@ -308,7 +308,7 @@ export default function TermsPage() {
                   <i className="ri-phone-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:+233545010949" className="text-blue-700 hover:underline">054 501 0949</a> · WhatsApp <a href="https://wa.me/233554169992" className="text-blue-700 hover:underline">055 416 9992</a>
+                    <a href="tel:+233545010949" className="text-blue-700 hover:underline">054 501 0949</a> · WhatsApp <a href="https://wa.me/140554169992" className="text-blue-700 hover:underline">+140554169992</a>
                   </div>
                 </div>
 

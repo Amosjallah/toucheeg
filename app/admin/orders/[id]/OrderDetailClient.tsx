@@ -345,8 +345,8 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
 
           {/* Footer */}
           <div className="border-t-2 border-gray-800 pt-4 text-center text-sm text-gray-600">
-            <p>Thank you for shopping with TIWAA PERFUME STYLE HOUSE!</p>
-            <p>Questions? Call 054 501 0949 or WhatsApp 055 416 9992 · tiwaperfumestyle@gmail.com</p>
+            <p>Thank you for shopping with TOUCHEEGLOW!</p>
+            <p>Questions? Call 054 501 0949 or WhatsApp +140554169992 · toucheeglow@gmail.com</p>
           </div>
         </div>
       </div>

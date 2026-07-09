@@ -28,9 +28,9 @@ export default function Footer() {
 
   const siteName = getSetting('site_name') || 'TOUCHEEGLOW';
   const siteTagline = getSetting('site_tagline') || 'Luxury Skincare from Canada.';
-  const contactEmail = getSetting('contact_email') || 'contact@toucheeglow.com';
+  const contactEmail = getSetting('contact_email') || 'toucheeglow@gmail.com';
   const contactPhone = getSetting('contact_phone') || '+1 800 555 0199';
-  const contactWhatsapp = getSetting('contact_whatsapp') || '+1 800 555 0199';
+  const contactWhatsapp = getSetting('contact_whatsapp') || '+140554169992';
   const contactAddress = getSetting('contact_address') || 'Toronto, Canada';
   const siteLogo = getSetting('site_logo') || '/touchee-logo.png';
   const socialFacebook = getSetting('social_facebook') || '';

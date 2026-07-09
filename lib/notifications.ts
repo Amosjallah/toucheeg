@@ -3,14 +3,14 @@ import { supabase } from '@/lib/supabase';
 import { escapeHtml } from '@/lib/sanitize';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 'missing_api_key');
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'contact@toucheeglow.com';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'TOUCHEEGLOW <contact@toucheeglow.com>';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'toucheeglow@gmail.com';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'TOUCHEEGLOW <toucheeglow@gmail.com>';
 const BRAND = {
     name: 'TOUCHEEGLOW',
     color: '#ec4899',
     colorLight: '#fdf2f8',
     colorDark: '#831843',
-    url: (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, ''),
+    url: (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3002').replace(/\/+$/, ''),
     phone: '+18005550199',
 };
 
@@ -176,7 +176,7 @@ export async function sendSMS({ to, message }: { to: string; message: string }) 
 export async function sendOrderConfirmation(order: any) {
     const { id, email, phone: orderPhone, shipping_address, total, created_at, order_number, metadata } = order;
 
-    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3002').replace(/\/+$/, '');
 
     // Build customer name from available sources
     const getName = () => {
@@ -298,7 +298,7 @@ ${emailButton('View Order in Admin', `${baseUrl}/admin/orders/${id}`)}
 export async function sendOrderStatusUpdate(order: any, newStatus: string) {
     const { id, email, phone: orderPhone, shipping_address, order_number, metadata } = order;
 
-    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3002').replace(/\/+$/, '');
 
     // Build customer name from available sources
     const getName = () => {
@@ -436,7 +436,7 @@ ${emailButton('Start Shopping', `${BRAND.url}/shop`)}
 export async function sendPaymentLink(order: any) {
     const { id, email, phone: orderPhone, shipping_address, total, order_number, metadata } = order;
 
-    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3002').replace(/\/+$/, '');
     const paymentUrl = `${baseUrl}/pay/${id}`;
 
     // Build customer name from available sources
