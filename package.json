@@ -31,7 +31,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "cross-env NODE_ENV=development next dev -H 0.0.0.0 -p 3000",
+    "dev": "cross-env NODE_ENV=development next dev -H 0.0.0.0 -p 3002",
     "lint": "next lint",
     "supabase:link": "supabase link --project-ref bskojprmfxugvkycvetc",
     "supabase:push": "supabase db push",
