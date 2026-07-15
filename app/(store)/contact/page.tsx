@@ -89,7 +89,7 @@ export default function ContactPage() {
 
   // Get contact details from CMS settings
   const contactEmail = getSetting('contact_email') || 'toucheeglow@gmail.com';
-  const contactPhone = getSetting('contact_phone') || '0545010949';
+  const contactPhone = getSetting('contact_phone') || '+140554169992';
   const contactWhatsapp = getSetting('contact_whatsapp') || '+140554169992';
   const contactAddress = getSetting('contact_address') || 'Canada';
 

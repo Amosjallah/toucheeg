@@ -63,23 +63,21 @@ export default function PaymentPage() {
     setError(null);
 
     try {
-      const paymentRes = await fetch('/api/payment/moolre', {
+      const paymentRes = await fetch('/api/payment/stripe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId: order.order_number,
-          amount: order.total,
-          customerEmail: order.email
         })
       });
 
       const paymentResult = await paymentRes.json();
 
-      if (!paymentResult.success) {
+      if (!paymentResult.success || !paymentResult.url) {
         throw new Error(paymentResult.message || 'Payment initialization failed');
       }
 
-      // Redirect to Moolre payment page
+      // Redirect to Stripe hosted checkout page
       window.location.href = paymentResult.url;
 
     } catch (err: any) {
@@ -218,7 +216,7 @@ export default function PaymentPage() {
           ) : (
             <>
               <i className="ri-secure-payment-line mr-2"></i>
-              Pay CA$ {order?.total?.toFixed(2)} with E-Transfer
+              Pay CA$ {order?.total?.toFixed(2)} with Card
             </>
           )}
         </button>
@@ -227,7 +225,7 @@ export default function PaymentPage() {
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500 flex items-center justify-center">
             <i className="ri-lock-line mr-1"></i>
-            Secure payment powered by Moolre
+            Secure payment powered by Stripe
           </p>
         </div>
 
