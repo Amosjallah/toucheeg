@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
 
 export default function AdminLoginPage() {
@@ -29,21 +28,25 @@ export default function AdminLoginPage() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
+      // Use server-side proxy to avoid CORS issues with Supabase from browser
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (error) throw error;
+      const result = await res.json();
 
-      if (data.session) {
-        // Set auth cookie so middleware can verify the session server-side
-        document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure`;
-        document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`;
-
-        router.push('/admin');
-        router.refresh();
+      if (!res.ok) {
+        throw new Error(result.error || 'Login failed');
       }
+
+      // Set auth cookies so middleware can verify the session server-side
+      document.cookie = `sb-access-token=${result.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      document.cookie = `sb-refresh-token=${result.refresh_token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+
+      router.push('/admin');
+      router.refresh();
     } catch (err: any) {
       setError(err.message || 'Login failed');
     } finally {
