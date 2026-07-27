@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { FALLBACK_CATEGORIES } from '@/lib/products-data';
+import { FALLBACK_CATEGORIES, ensureCategories } from '@/lib/products-data';
 
 // Simple in-memory cache
 let cache: { data: any; timestamp: number } | null = null;
@@ -24,11 +24,7 @@ export async function GET() {
             .eq('status', 'active')
             .order('name');
 
-        let responseData: any[] = data || [];
-        if (error || !data || data.length === 0) {
-            console.warn('[Storefront API] Using fallback categories due to Supabase error or empty result');
-            responseData = FALLBACK_CATEGORIES as any[];
-        }
+        let responseData: any[] = ensureCategories(data);
 
         // Cache
         cache = { data: responseData, timestamp: Date.now() };

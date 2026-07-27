@@ -9,7 +9,7 @@ import { getColorHex } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
 import { cachedQuery } from '@/lib/query-cache';
 import PageHero from '@/components/PageHero';
-import { FALLBACK_PRODUCTS } from '@/lib/products-data';
+import { FALLBACK_PRODUCTS, ensureProducts, ensureCategories } from '@/lib/products-data';
 
 function ShopContent() {
   usePageTitle('Shop All Products');
@@ -141,10 +141,7 @@ function ShopContent() {
           2 * 60 * 1000 // Cache for 2 minutes
         );
 
-        let targetData = data;
-        if (error || !targetData || targetData.length === 0) {
-          targetData = FALLBACK_PRODUCTS;
-        }
+        let targetData = ensureProducts(data);
 
         const formattedProducts = targetData.map((p: any) => {
           const variants = p.product_variants || [];

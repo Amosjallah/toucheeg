@@ -43,6 +43,30 @@ export const FALLBACK_CATEGORIES = [
   { id: 'cat-face-masks', name: 'Face Masks', slug: 'face-masks', description: 'Nourishing and clarifying masks for your self-care routine.', image_url: null, parent_id: null, metadata: { featured: true } },
 ];
 
+export function ensureProducts(data: any[] | null | undefined): any[] {
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return FALLBACK_PRODUCTS as any[];
+  }
+  const existingSlugs = new Set(data.map((p: any) => p.slug));
+  const missing = FALLBACK_PRODUCTS.filter((p) => !existingSlugs.has(p.slug));
+  if (missing.length > 0) {
+    return [...data, ...missing];
+  }
+  return data;
+}
+
+export function ensureCategories(data: any[] | null | undefined): any[] {
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return FALLBACK_CATEGORIES as any[];
+  }
+  const existingSlugs = new Set(data.map((c: any) => c.slug));
+  const missing = FALLBACK_CATEGORIES.filter((c) => !existingSlugs.has(c.slug));
+  if (missing.length > 0) {
+    return [...data, ...missing];
+  }
+  return data;
+}
+
 export const FALLBACK_PRODUCTS: FallbackProduct[] = [
   {
     id: 'e1000001-0000-4000-a000-000000000001',

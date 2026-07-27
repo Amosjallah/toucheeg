@@ -10,7 +10,7 @@ import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import WhoWeAreSection from '@/components/WhoWeAreSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
-import { FALLBACK_PRODUCTS, FALLBACK_CATEGORIES } from '@/lib/products-data';
+import { FALLBACK_PRODUCTS, FALLBACK_CATEGORIES, ensureProducts, ensureCategories } from '@/lib/products-data';
 
 export default function Home() {
   usePageTitle('');
@@ -68,8 +68,8 @@ export default function Home() {
           .order('created_at', { ascending: false })
           .limit(8);
 
-        if (productsError) throw productsError;
-        setFeaturedProducts(productsData && productsData.length > 0 ? productsData : FALLBACK_PRODUCTS);
+        if (productsError) console.warn('Supabase products fetch warning:', productsError);
+        setFeaturedProducts(ensureProducts(productsData));
 
         // Fetch featured categories (featured is stored in metadata JSONB)
         const { data: categoriesData, error: categoriesError } = await supabase
@@ -78,24 +78,17 @@ export default function Home() {
           .eq('status', 'active')
           .order('name');
 
-        if (categoriesError) throw categoriesError;
+        if (categoriesError) console.warn('Supabase categories fetch warning:', categoriesError);
 
         // Filter by metadata.featured = true on client side
         const featuredCategories = (categoriesData || []).filter(
           (cat: any) => cat.metadata?.featured === true
         );
-        setCategories(featuredCategories.length > 0 ? featuredCategories : FALLBACK_CATEGORIES);
+        setCategories(ensureCategories(featuredCategories));
       } catch (error: unknown) {
-        const err = error as { message?: string; code?: string };
-        const msg = err?.message ?? (error instanceof Error ? error.message : String(error));
-        const code = err?.code ?? '';
-        if (code === 'PGRST205') {
-          console.warn('Products/categories tables not found. Using fallback products dataset.');
-        } else {
-          console.error('Error fetching data:', msg, code ? `(${code})` : '');
-        }
-        setFeaturedProducts(FALLBACK_PRODUCTS);
-        setCategories(FALLBACK_CATEGORIES);
+        console.warn('Error fetching data, using fallback dataset:', error);
+        setFeaturedProducts(ensureProducts([]));
+        setCategories(ensureCategories([]));
       } finally {
         setLoading(false);
       }

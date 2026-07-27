@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { FALLBACK_PRODUCTS } from '@/lib/products-data';
+import { FALLBACK_PRODUCTS, ensureProducts } from '@/lib/products-data';
 
 // Simple in-memory cache
 let cache: { data: any; timestamp: number } | null = null;
@@ -50,11 +50,7 @@ export async function GET(request: Request) {
 
         const { data, error } = await query;
 
-        let responseData: any[] = data || [];
-        if (error || !data || data.length === 0) {
-            console.warn('[Storefront API] Using fallback products due to Supabase error or empty result');
-            responseData = FALLBACK_PRODUCTS as any[];
-        }
+        let responseData: any[] = ensureProducts(data);
 
         // Cache the result
         if (!cache) cache = { data: {}, timestamp: Date.now() };
