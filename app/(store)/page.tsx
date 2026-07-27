@@ -10,6 +10,7 @@ import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import WhoWeAreSection from '@/components/WhoWeAreSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { FALLBACK_PRODUCTS, FALLBACK_CATEGORIES } from '@/lib/products-data';
 
 export default function Home() {
   usePageTitle('');
@@ -68,7 +69,7 @@ export default function Home() {
           .limit(8);
 
         if (productsError) throw productsError;
-        setFeaturedProducts(productsData || []);
+        setFeaturedProducts(productsData && productsData.length > 0 ? productsData : FALLBACK_PRODUCTS);
 
         // Fetch featured categories (featured is stored in metadata JSONB)
         const { data: categoriesData, error: categoriesError } = await supabase
@@ -83,16 +84,18 @@ export default function Home() {
         const featuredCategories = (categoriesData || []).filter(
           (cat: any) => cat.metadata?.featured === true
         );
-        setCategories(featuredCategories);
+        setCategories(featuredCategories.length > 0 ? featuredCategories : FALLBACK_CATEGORIES);
       } catch (error: unknown) {
         const err = error as { message?: string; code?: string };
         const msg = err?.message ?? (error instanceof Error ? error.message : String(error));
         const code = err?.code ?? '';
         if (code === 'PGRST205') {
-          console.warn('Products/categories tables not found. Run Supabase migrations to create the schema.');
+          console.warn('Products/categories tables not found. Using fallback products dataset.');
         } else {
           console.error('Error fetching data:', msg, code ? `(${code})` : '');
         }
+        setFeaturedProducts(FALLBACK_PRODUCTS);
+        setCategories(FALLBACK_CATEGORIES);
       } finally {
         setLoading(false);
       }
@@ -143,30 +146,30 @@ export default function Home() {
         {/* Background Slider + Per-Slide Content */}
         {[
           {
-            image: '/skincare-aesthetic.jpg',
-            tag: 'New Arrivals',
-            heading: <>Premium <br /><span className="italic font-light text-blue-200">Glow Collection</span></>,
-            subtext: 'Discover our latest skincare arrivals formulated to enhance your natural beauty. Unmatched quality for radiant skin.',
+            image: 'https://images.unsplash.com/photo-1608248597481-496100c80836?q=80&w=2070&auto=format&fit=crop',
+            tag: 'TOUCHEEGLOW · PREMIUM QUALITY',
+            heading: <>Premium Skincare & <br /><span className="italic font-light text-emerald-200">Hydration Essentials</span></>,
+            subtext: 'Formulated to restore hydration, nourish deeply, and bring out your skin\'s natural glow.',
             cta: { text: 'Shop Now', href: '/shop' },
-            cta2: { text: 'View Catalog', href: '/categories' },
+            cta2: { text: 'Our Story', href: '/about' },
             position: 'object-center'
           },
           {
-            image: '/body-butter.jpg',
-            tag: 'Skincare Routine',
-            heading: <>Elegance <br /><span className="italic font-light text-rose-200">Redefined</span></>,
-            subtext: 'Step into the season with our exclusive skincare edits. Curated for the modern beauty enthusiast.',
-            cta: { text: 'Shop Skincare', href: '/shop?category=skincare' },
-            cta2: { text: 'Learn More', href: '/about' },
-            position: 'object-top'
+            image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=2070&auto=format&fit=crop',
+            tag: 'NATURAL FORMULA · CRUELTY FREE',
+            heading: <>Luxury Whipped <br /><span className="italic font-light text-rose-200">Face & Body Creams</span></>,
+            subtext: 'Indulge in ultra-rich, whipped hydration for 24-hour nourishment and silky-smooth skin.',
+            cta: { text: 'Shop Creams', href: '/shop' },
+            cta2: { text: 'View Catalog', href: '/shop' },
+            position: 'object-center'
           },
           {
-            image: '/beard-care.jpg',
-            tag: 'Men\'s Grooming',
-            heading: <>Ultimate <br /><span className="italic font-light text-amber-200">Beard Care</span></>,
-            subtext: '100% Natural beard balm and growth oils. Formulated for a fuller, healthier beard.',
-            cta: { text: 'Shop Essentials', href: '/shop?category=mens' },
-            cta2: { text: 'Discover More', href: '/about' },
+            image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=2070&auto=format&fit=crop',
+            tag: 'ORGANIC INGREDIENTS · CANADA MADE',
+            heading: <>Nourishing Face Oils & <br /><span className="italic font-light text-amber-200">Glow Serums</span></>,
+            subtext: 'Revitalize your routine with botanically infused face oils and active vitamin glow serums.',
+            cta: { text: 'Shop Serums', href: '/shop' },
+            cta2: { text: 'Our Philosophy', href: '/about' },
             position: 'object-center'
           },
         ].map((slide, index) => (
@@ -188,8 +191,7 @@ export default function Home() {
             </div>
 
             {/* Premium Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
 
             {/* Slide Content */}
             <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 md:px-16 max-w-7xl mx-auto h-full mt-[-20px]">
@@ -197,35 +199,34 @@ export default function Home() {
                 <div
                   className={`overflow-hidden transition-all duration-700 delay-100 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                  <span className="inline-block py-1 px-4 mb-6 text-white/90 text-sm md:text-base tracking-[0.3em] uppercase font-semibold border border-white/20 rounded-full backdrop-blur-md bg-white/5">
+                  <span className="inline-block py-1.5 px-6 mb-6 text-white text-xs md:text-sm tracking-[0.25em] uppercase font-bold border border-white/30 rounded-full backdrop-blur-md bg-black/20">
                     {slide.tag}
                   </span>
                 </div>
 
                 <div className={`transition-all duration-700 delay-200 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif text-white mb-6 leading-[1.1] drop-shadow-2xl">
+                  <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-6 leading-[1.15] drop-shadow-2xl font-sans tracking-tight">
                     {slide.heading}
                   </h1>
                 </div>
 
                 <div className={`transition-all duration-700 delay-300 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                  <p className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 font-normal leading-relaxed drop-shadow-md">
                     {slide.subtext}
                   </p>
                 </div>
 
-                <div className={`flex flex-col sm:flex-row items-center justify-center gap-6 transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <div className={`flex flex-row items-center justify-center gap-4 transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <Link
                     href={slide.cta.href}
-                    className="group relative px-10 py-4 bg-white text-gray-950 rounded-full font-medium text-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:bg-gray-100 hover:scale-105"
+                    className="group flex items-center gap-2 px-8 py-3.5 bg-[#0d8a5f] hover:bg-[#0b734f] text-white rounded-full font-semibold text-base transition-all hover:scale-105 shadow-lg shadow-[#0d8a5f]/20 whitespace-nowrap"
                   >
-                    <span className="relative z-10 flex items-center gap-2">
-                      {slide.cta.text} <i className="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
-                    </span>
+                    <span>{slide.cta.text}</span>
+                    <i className="ri-arrow-right-up-line transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-lg"></i>
                   </Link>
                   <Link
                     href={slide.cta2.href}
-                    className="group px-10 py-4 bg-white/10 border border-white/30 text-white rounded-full font-medium text-lg backdrop-blur-md hover:bg-white/20 hover:border-white/50 transition-all hover:scale-105"
+                    className="group px-8 py-3.5 bg-transparent border border-white/50 text-white rounded-full font-semibold text-base backdrop-blur-sm hover:bg-white/10 hover:border-white/80 transition-all hover:scale-105 whitespace-nowrap"
                   >
                     {slide.cta2.text}
                   </Link>

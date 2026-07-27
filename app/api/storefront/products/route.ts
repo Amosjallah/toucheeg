@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-// Server-side Supabase client
 import { supabase } from '@/lib/supabase';
+import { FALLBACK_PRODUCTS } from '@/lib/products-data';
 
 // Simple in-memory cache
 let cache: { data: any; timestamp: number } | null = null;
@@ -50,17 +50,18 @@ export async function GET(request: Request) {
 
         const { data, error } = await query;
 
-        if (error) {
-            console.error('[Storefront API] Products error:', error);
-            return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+        let responseData: any[] = data || [];
+        if (error || !data || data.length === 0) {
+            console.warn('[Storefront API] Using fallback products due to Supabase error or empty result');
+            responseData = FALLBACK_PRODUCTS as any[];
         }
 
         // Cache the result
         if (!cache) cache = { data: {}, timestamp: Date.now() };
-        cache.data[cacheKey] = data;
+        cache.data[cacheKey] = responseData;
         cache.timestamp = Date.now();
 
-        return NextResponse.json(data, {
+        return NextResponse.json(responseData, {
             headers: {
                 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=1800',
                 'X-Cache': 'MISS'
@@ -68,6 +69,6 @@ export async function GET(request: Request) {
         });
     } catch (err: any) {
         console.error('[Storefront API] Error:', err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json(FALLBACK_PRODUCTS as any[], { status: 200 });
     }
 }

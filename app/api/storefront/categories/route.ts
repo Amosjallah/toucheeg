@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { FALLBACK_CATEGORIES } from '@/lib/products-data';
 
 // Simple in-memory cache
 let cache: { data: any; timestamp: number } | null = null;
@@ -23,15 +24,16 @@ export async function GET() {
             .eq('status', 'active')
             .order('name');
 
-        if (error) {
-            console.error('[Storefront API] Categories error:', error);
-            return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
+        let responseData: any[] = data || [];
+        if (error || !data || data.length === 0) {
+            console.warn('[Storefront API] Using fallback categories due to Supabase error or empty result');
+            responseData = FALLBACK_CATEGORIES as any[];
         }
 
         // Cache
-        cache = { data, timestamp: Date.now() };
+        cache = { data: responseData, timestamp: Date.now() };
 
-        return NextResponse.json(data, {
+        return NextResponse.json(responseData, {
             headers: {
                 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
                 'X-Cache': 'MISS'
@@ -39,6 +41,6 @@ export async function GET() {
         });
     } catch (err: any) {
         console.error('[Storefront API] Error:', err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json(FALLBACK_CATEGORIES as any[], { status: 200 });
     }
 }

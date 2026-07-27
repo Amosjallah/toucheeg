@@ -11,6 +11,7 @@ import { StructuredData, generateProductSchema, generateBreadcrumbSchema } from 
 import { notFound } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { FALLBACK_PRODUCTS } from '@/lib/products-data';
 
 // Map common color names to hex values for the swatch preview
 function colorNameToHex(name: string): string {
@@ -72,15 +73,22 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           2 * 60 * 1000 // 2 minutes
         );
 
-        if (error || !productData) {
-          console.error('Error fetching product:', error);
-          setLoading(false);
-          return;
+        let targetProduct = productData;
+
+        if (error || !targetProduct) {
+          const fallbackMatch = FALLBACK_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
+          if (fallbackMatch) {
+            targetProduct = fallbackMatch;
+          } else {
+            console.error('Error fetching product:', error);
+            setLoading(false);
+            return;
+          }
         }
 
         // Transform product data
         // Map variant colors from option2, and extract color_hex from metadata
-        const rawVariants = (productData.product_variants || []).map((v: any) => ({
+        const rawVariants = (targetProduct.product_variants || []).map((v: any) => ({
           ...v,
           color: v.option2 || '',
           colorHex: v.metadata?.color_hex || ''
@@ -97,13 +105,13 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
         });
 
         const transformedProduct = {
-          ...productData,
-          images: productData.product_images?.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.url) || [],
-          category: productData.categories?.name || 'Shop',
-          rating: productData.rating_avg || 0,
+          ...targetProduct,
+          images: targetProduct.product_images?.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.url) || [],
+          category: targetProduct.categories?.name || 'Shop',
+          rating: targetProduct.rating_avg || 0,
           reviewCount: 0,
-          stockCount: productData.quantity,
-          moq: productData.moq || 1,
+          stockCount: targetProduct.quantity,
+          moq: targetProduct.moq || 1,
           colors: [...new Set(rawVariants.map((v: any) => v.color).filter(Boolean))],
           colorHexMap,
           variants: rawVariants,
@@ -111,7 +119,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           features: ['Premium Quality', 'Authentic Design'],
           featured: ['Premium Quality', 'Authentic Design'],
           care: 'Handle with care.',
-          preorderShipping: productData.metadata?.preorder_shipping || null
+          preorderShipping: targetProduct.metadata?.preorder_shipping || null
         };
 
         // Ensure at least one image/placeholder
