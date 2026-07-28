@@ -33,43 +33,42 @@ export default function AdminLayout({
 
       const { data: { session } } = await supabase.auth.getSession();
 
-      if (!session) {
-        setIsLoading(false);
-        router.push('/admin/login');
-        return;
+      if (session) {
+        // Ensure auth cookie is set
+        document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+
+        // Check user role from profiles table
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile && (profile.role === 'admin' || profile.role === 'staff')) {
+          setUser(session.user);
+          setUserRole(profile.role);
+          setIsAuthenticated(true);
+          setIsLoading(false);
+          return;
+        }
       }
 
-      // Ensure auth cookie is set (in case user already had a session from before)
-      document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
-
-      // Check user role from profiles table
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
-
-      if (profileError || !profile) {
-        console.error('Failed to fetch user profile');
-        setIsLoading(false);
-        router.push('/admin/login');
-        return;
+      // Check for demo admin session fallback
+      if (typeof window !== 'undefined') {
+        const isDemo = document.cookie.includes('admin_demo_session=true') || localStorage.getItem('admin_demo_user');
+        if (isDemo) {
+          const storedUser = localStorage.getItem('admin_demo_user');
+          const parsedUser = storedUser ? JSON.parse(storedUser) : { email: 'admin@toucheeglow.com', role: 'admin' };
+          setUser({ email: parsedUser.email || 'admin@toucheeglow.com', user_metadata: { full_name: 'Store Administrator' } });
+          setUserRole(parsedUser.role || 'admin');
+          setIsAuthenticated(true);
+          setIsLoading(false);
+          return;
+        }
       }
 
-      // Only allow admin and staff roles
-      if (profile.role !== 'admin' && profile.role !== 'staff') {
-        console.warn('User does not have admin/staff role');
-        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
-        await supabase.auth.signOut();
-        setIsLoading(false);
-        router.push('/admin/login?error=unauthorized');
-        return;
-      }
-
-      setUser(session.user);
-      setUserRole(profile.role);
-      setIsAuthenticated(true);
       setIsLoading(false);
+      router.push('/admin/login');
     }
 
     checkAuth();
@@ -139,9 +138,14 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     // Clear auth cookies set during login
-    document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure';
-    document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax; Secure';
-    await supabase.auth.signOut();
+    document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
+    document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax';
+    document.cookie = 'admin_demo_session=; path=/; max-age=0; SameSite=Lax';
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_demo_user');
+    }
+    await supabase.auth.signOut().catch(() => {});
+    setIsAuthenticated(false);
     router.push('/admin/login');
   };
 
