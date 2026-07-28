@@ -3,9 +3,13 @@ import Stripe from 'stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { sendOrderConfirmation } from '@/lib/notifications';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2026-06-24.dahlia',
-});
+export const dynamic = 'force-dynamic';
+
+function getStripe() {
+    return new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
+        apiVersion: '2026-06-24.dahlia',
+    });
+}
 
 /**
  * Stripe Webhook Handler
@@ -26,6 +30,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  *  stripe listen --forward-to localhost:3002/api/payment/stripe/webhook
  */
 export async function POST(req: Request) {
+    const stripe = getStripe();
     console.log('[Stripe Webhook] Received at', new Date().toISOString());
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;

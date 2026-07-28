@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { sendOrderConfirmation } from '@/lib/notifications';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '@/lib/rate-limit';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Moolre Callback Payload Structure (from their actual API):
  * {

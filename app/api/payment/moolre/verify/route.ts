@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { sendOrderConfirmation } from '@/lib/notifications';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '@/lib/rate-limit';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Payment verification endpoint.
  * Called from the order-success page after the user completes payment on Moolre.

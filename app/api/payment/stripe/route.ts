@@ -3,12 +3,17 @@ import Stripe from 'stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '@/lib/rate-limit';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2026-06-24.dahlia',
-});
+export const dynamic = 'force-dynamic';
+
+function getStripe() {
+    return new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
+        apiVersion: '2026-06-24.dahlia',
+    });
+}
 
 export async function POST(req: Request) {
     try {
+        const stripe = getStripe();
         // Rate limiting (reuse payment rate limit)
         const clientId = getClientIdentifier(req);
         const rateLimitResult = checkRateLimit(`payment:${clientId}`, RATE_LIMITS.payment);
@@ -46,14 +51,31 @@ export async function POST(req: Request) {
         }
 
         // SECURITY: Always fetch the order total from the DB — never trust client amount
-        const { data: order, error: orderError } = await supabaseAdmin
+        // Try by order_number first (most common), fallback to UUID id
+        let order: any = null;
+        let orderError: any = null;
+
+        const byNumber = await supabaseAdmin
             .from('orders')
             .select('id, order_number, total, email, payment_status, currency')
-            .or(`id.eq.${orderId},order_number.eq.${orderId}`)
-            .single();
+            .eq('order_number', orderId)
+            .maybeSingle();
+
+        if (byNumber.data) {
+            order = byNumber.data;
+        } else {
+            // Try by UUID id as fallback
+            const byId = await supabaseAdmin
+                .from('orders')
+                .select('id, order_number, total, email, payment_status, currency')
+                .eq('id', orderId)
+                .maybeSingle();
+            order = byId.data;
+            orderError = byId.error;
+        }
 
         if (orderError || !order) {
-            console.error('[Stripe] Order not found:', orderId);
+            console.error('[Stripe] Order not found. Searched for:', orderId, '| DB error:', orderError?.message || 'none');
             return NextResponse.json(
                 { success: false, message: 'Order not found' },
                 { status: 404 }

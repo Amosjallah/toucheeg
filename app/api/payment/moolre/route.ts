@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '@/lib/rate-limit';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
     try {
         // Rate limiting
