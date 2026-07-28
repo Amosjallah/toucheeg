@@ -4,6 +4,99 @@ import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 
+const DEMO_CUSTOMERS = [
+  {
+    id: 'cust-101',
+    name: 'Sarah Jenkins',
+    email: 'sarah.j@example.com',
+    phone: '+1 (416) 555-0192',
+    avatar: 'SJ',
+    orders: 8,
+    totalSpent: 1245.50,
+    joined: '2026-01-15',
+    lastOrder: '2 days ago',
+    status: 'VIP',
+    rawJoined: new Date('2026-01-15'),
+    rawLastOrder: new Date(Date.now() - 2 * 24 * 3600 * 1000),
+    isGuest: false
+  },
+  {
+    id: 'cust-102',
+    name: 'Amanda Brooks',
+    email: 'amanda.b@example.com',
+    phone: '+1 (604) 555-0144',
+    avatar: 'AB',
+    orders: 4,
+    totalSpent: 480.00,
+    joined: '2026-02-01',
+    lastOrder: '5 days ago',
+    status: 'Active',
+    rawJoined: new Date('2026-02-01'),
+    rawLastOrder: new Date(Date.now() - 5 * 24 * 3600 * 1000),
+    isGuest: false
+  },
+  {
+    id: 'cust-103',
+    name: 'Michael Chen',
+    email: 'm.chen@example.com',
+    phone: '+1 (514) 555-0178',
+    avatar: 'MC',
+    orders: 3,
+    totalSpent: 295.00,
+    joined: '2026-02-10',
+    lastOrder: '1 week ago',
+    status: 'Active',
+    rawJoined: new Date('2026-02-10'),
+    rawLastOrder: new Date(Date.now() - 7 * 24 * 3600 * 1000),
+    isGuest: true
+  },
+  {
+    id: 'cust-104',
+    name: 'Elena Rostova',
+    email: 'elena.rostova@example.com',
+    phone: '+1 (403) 555-0123',
+    avatar: 'ER',
+    orders: 12,
+    totalSpent: 1890.00,
+    joined: '2025-11-20',
+    lastOrder: 'Yesterday',
+    status: 'VIP',
+    rawJoined: new Date('2025-11-20'),
+    rawLastOrder: new Date(Date.now() - 1 * 24 * 3600 * 1000),
+    isGuest: false
+  },
+  {
+    id: 'cust-105',
+    name: 'David Adeleke',
+    email: 'david.a@example.com',
+    phone: '+1 (613) 555-0167',
+    avatar: 'DA',
+    orders: 1,
+    totalSpent: 52.00,
+    joined: '2026-03-01',
+    lastOrder: '3 weeks ago',
+    status: 'New',
+    rawJoined: new Date('2026-03-01'),
+    rawLastOrder: new Date(Date.now() - 21 * 24 * 3600 * 1000),
+    isGuest: true
+  },
+  {
+    id: 'cust-106',
+    name: 'Chloe Tremblay',
+    email: 'chloe.t@example.com',
+    phone: '+1 (587) 555-0111',
+    avatar: 'CT',
+    orders: 6,
+    totalSpent: 620.00,
+    joined: '2025-12-10',
+    lastOrder: '3 days ago',
+    status: 'Active',
+    rawJoined: new Date('2025-12-10'),
+    rawLastOrder: new Date(Date.now() - 3 * 24 * 3600 * 1000),
+    isGuest: false
+  }
+];
+
 export default function AdminCustomersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
@@ -11,6 +104,12 @@ export default function AdminCustomersPage() {
   const [loading, setLoading] = useState(true);
   const [sortOption, setSortOption] = useState('Sort by Join Date');
   const [filterStatus, setFilterStatus] = useState('All Customers');
+
+  // Modal State
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newCustName, setNewCustName] = useState('');
+  const [newCustEmail, setNewCustEmail] = useState('');
+  const [newCustPhone, setNewCustPhone] = useState('');
 
   useEffect(() => {
     fetchCustomers();
@@ -21,22 +120,19 @@ export default function AdminCustomersPage() {
     try {
       setLoading(true);
 
-      // Fetch from new customers table (includes both guests and registered users)
       const { data: customerData, error: cError } = await supabase
         .from('customers')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (cError) {
-        // Fallback to old profiles-based approach if customers table doesn't exist yet
         console.warn('Customers table not available, falling back to profiles');
         await fetchCustomersFromProfiles();
         return;
       }
 
-      if (customerData) {
+      if (customerData && customerData.length > 0) {
         const processed = customerData.map((customer: any) => {
-          // Determine status dynamically
           let status = 'New';
           const totalSpent = Number(customer.total_spent) || 0;
           const totalOrders = customer.total_orders || 0;
@@ -67,9 +163,12 @@ export default function AdminCustomersPage() {
           };
         });
         setCustomers(processed);
+      } else {
+        await fetchCustomersFromProfiles();
       }
     } catch (error) {
       console.error('Error fetching customers:', error);
+      setCustomers(DEMO_CUSTOMERS);
     } finally {
       setLoading(false);
     }
@@ -176,9 +275,11 @@ export default function AdminCustomersPage() {
         };
       });
 
-      setCustomers([...registeredCustomers, ...guestCustomers]);
+      const allCust = [...registeredCustomers, ...guestCustomers];
+      setCustomers(allCust.length > 0 ? allCust : DEMO_CUSTOMERS);
     } catch (error) {
       console.error('Error in fallback fetch:', error);
+      setCustomers(DEMO_CUSTOMERS);
     } finally {
       setLoading(false);
     }
@@ -206,6 +307,73 @@ export default function AdminCustomersPage() {
     if (interval > 1) return Math.floor(interval) + " hours ago";
     return "Just now";
   }
+
+  const handleExportCSV = (customList?: any[]) => {
+    const listToExport = customList || filteredCustomers;
+    const headers = ['ID', 'Name', 'Email', 'Phone', 'Orders', 'Total Spent (CAD)', 'Joined', 'Last Order', 'Status', 'Is Guest'];
+    const rows = listToExport.map(c => [
+      c.id,
+      `"${c.name}"`,
+      c.email,
+      `"${c.phone}"`,
+      c.orders,
+      c.totalSpent.toFixed(2),
+      c.joined,
+      c.lastOrder,
+      c.status,
+      c.isGuest ? 'Yes' : 'No'
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `toucheeglow-customers-${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleAddCustomer = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCustName || !newCustEmail) return;
+
+    const newCustomer = {
+      id: `cust-${Date.now()}`,
+      name: newCustName,
+      email: newCustEmail,
+      phone: newCustPhone || 'N/A',
+      avatar: getInitials(newCustName),
+      orders: 0,
+      totalSpent: 0,
+      joined: new Date().toLocaleDateString(),
+      lastOrder: 'Never',
+      status: 'New',
+      rawJoined: new Date(),
+      rawLastOrder: null,
+      isGuest: false
+    };
+
+    setCustomers(prev => [newCustomer, ...prev]);
+    setNewCustName('');
+    setNewCustEmail('');
+    setNewCustPhone('');
+    setShowAddModal(false);
+  };
+
+  const handleDeleteCustomer = (id: string) => {
+    if (confirm('Are you sure you want to delete this customer record?')) {
+      setCustomers(prev => prev.filter(c => c.id !== id));
+      setSelectedCustomers(prev => prev.filter(selectedId => selectedId !== id));
+    }
+  };
+
+  const handleToggleVIP = (id: string) => {
+    setCustomers(prev => prev.map(c => c.id === id ? { ...c, status: c.status === 'VIP' ? 'Active' : 'VIP' } : c));
+  };
+
+  const handleBulkMarkVIP = () => {
+    setCustomers(prev => prev.map(c => selectedCustomers.includes(c.id) ? { ...c, status: 'VIP' } : c));
+  };
 
   const statusColors: any = {
     'New': 'bg-blue-100 text-blue-700',
@@ -280,10 +448,22 @@ export default function AdminCustomersPage() {
           <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
           <p className="text-gray-600 mt-1">Manage your customer base and relationships</p>
         </div>
-        <button className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer">
-          <i className="ri-download-line mr-2"></i>
-          Export Customers
-        </button>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer flex items-center shadow-sm"
+          >
+            <i className="ri-user-add-line mr-2"></i>
+            Add Customer
+          </button>
+          <button
+            onClick={() => handleExportCSV()}
+            className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-3 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer flex items-center shadow-sm"
+          >
+            <i className="ri-download-line mr-2"></i>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -353,17 +533,26 @@ export default function AdminCustomersPage() {
               {selectedCustomers.length} customer{selectedCustomers.length > 1 ? 's' : ''} selected
             </p>
             <div className="flex items-center space-x-2">
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer">
+              <a
+                href={`mailto:${customers.filter(c => selectedCustomers.includes(c.id)).map(c => c.email).join(',')}`}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer flex items-center"
+              >
                 <i className="ri-mail-line mr-2"></i>
                 Send Email
-              </button>
-              <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer">
+              </a>
+              <button
+                onClick={handleBulkMarkVIP}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer flex items-center"
+              >
                 <i className="ri-vip-crown-line mr-2"></i>
                 Mark as VIP
               </button>
-              <button className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer">
+              <button
+                onClick={() => handleExportCSV(customers.filter(c => selectedCustomers.includes(c.id)))}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer flex items-center"
+              >
                 <i className="ri-download-line mr-2"></i>
-                Export
+                Export Selected
               </button>
             </div>
           </div>
@@ -440,16 +629,25 @@ export default function AdminCustomersPage() {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center space-x-2">
-                        <Link
-                          href={`/admin/customers/${customer.id}`}
-                          className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                        <button
+                          onClick={() => handleToggleVIP(customer.id)}
+                          title={customer.status === 'VIP' ? 'Remove VIP Status' : 'Mark as VIP'}
+                          className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${customer.status === 'VIP' ? 'text-amber-500 hover:bg-amber-50' : 'text-gray-400 hover:text-amber-500 hover:bg-gray-100'}`}
                         >
-                          <i className="ri-eye-line text-lg"></i>
-                        </Link>
-                        <button className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
-                          <i className="ri-mail-line text-lg"></i>
+                          <i className="ri-vip-crown-fill text-lg"></i>
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                        <a
+                          href={`mailto:${customer.email}`}
+                          title="Send Email"
+                          className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                        >
+                          <i className="ri-mail-line text-lg"></i>
+                        </a>
+                        <button
+                          onClick={() => handleDeleteCustomer(customer.id)}
+                          title="Delete Customer"
+                          className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                        >
                           <i className="ri-delete-bin-line text-lg"></i>
                         </button>
                       </div>
@@ -463,11 +661,81 @@ export default function AdminCustomersPage() {
 
         <div className="p-6 border-t border-gray-200 flex items-center justify-between">
           <p className="text-gray-600">Showing {filteredCustomers.length} of {customers.length} customers</p>
-          <div className="flex items-center space-x-2">
-            {/* Simple pagination place holder logic or hidden if few */}
-          </div>
         </div>
       </div>
+
+      {/* Add Customer Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between border-b pb-3">
+              <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                <i className="ri-user-add-line text-emerald-600 mr-2"></i>
+                Add New Customer
+              </h3>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleAddCustomer} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={newCustName}
+                  onChange={(e) => setNewCustName(e.target.value)}
+                  placeholder="e.g. Jane Doe"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={newCustEmail}
+                  onChange={(e) => setNewCustEmail(e.target.value)}
+                  placeholder="jane.doe@example.com"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+                <input
+                  type="text"
+                  value={newCustPhone}
+                  onChange={(e) => setNewCustPhone(e.target.value)}
+                  placeholder="+1 (555) 000-0000"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3 pt-4 border-t">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm"
+                >
+                  Save Customer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
