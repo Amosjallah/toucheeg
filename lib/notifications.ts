@@ -144,7 +144,7 @@ export async function sendSMS({ to, message }: { to: string; message: string }) 
             },
             body: JSON.stringify({
                 type: 1,
-                senderid: 'TOUCHEE',
+                senderid: 'TOUCHEEGLOW',
                 messages: [
                     {
                         recipient: recipient,

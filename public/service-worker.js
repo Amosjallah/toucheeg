@@ -1,5 +1,5 @@
-// TIWAA PERFUME STYLE HOUSE - Service Worker v2.2
-const CACHE_VERSION = 'tiwaa-v2.2';
+// TOUCHEEGLOW - Service Worker v2.2
+const CACHE_VERSION = 'touchee-v2.2';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/account',
   '/categories',
   '/offline',
-  '/tiwa logo.png',
+  '/touchee-logo.png',
 ];
 
 // Cache size limits
@@ -34,7 +34,7 @@ async function trimCache(cacheName, maxItems) {
 
 // Install: pre-cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing TIWAA v2.2...');
+  console.log('[SW] Installing TOUCHEEGLOW v2.2...');
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
@@ -51,7 +51,7 @@ self.addEventListener('install', (event) => {
 
 // Activate: clean old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating TIWAA v2.2...');
+  console.log('[SW] Activating TOUCHEEGLOW v2.2...');
   event.waitUntil(
     caches.keys()
       .then((keys) => {
@@ -223,9 +223,9 @@ self.addEventListener('push', (event) => {
 
   const data = event.data.json();
   const options = {
-    body: data.body || 'New update from TIWAA PERFUME STYLE HOUSE',
-    icon: '/tiwa logo.png',
-    badge: '/tiwa logo.png',
+    body: data.body || 'New update from TOUCHEEGLOW',
+    icon: '/touchee-logo.png',
+    badge: '/touchee-logo.png',
     vibrate: [100, 50, 100],
     data: {
       url: data.url || '/',
@@ -239,7 +239,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'TIWAA PERFUME STYLE HOUSE',
+      data.title || 'TOUCHEEGLOW',
       options
     )
   );

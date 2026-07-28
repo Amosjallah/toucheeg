@@ -284,7 +284,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
           {/* Header */}
           <div className="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-4">
             <div>
-              <h1 className="text-2xl font-bold">TIWAA PERFUME STYLE HOUSE</h1>
+              <h1 className="text-2xl font-bold">TOUCHEEGLOW</h1>
               <p className="text-sm text-gray-600">Order Packing Slip</p>
             </div>
             <div className="text-right">

@@ -23,21 +23,24 @@ export default function AdminLayout({
   const [enabledModules, setEnabledModules] = useState<string[]>([]);
 
   useEffect(() => {
+    // Only run auth check once on mount (not on every pathname change)
     async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-
+      // Login page renders its own full-page UI — skip layout auth checks
       if (pathname === '/admin/login') {
         setIsLoading(false);
         return;
       }
 
+      const { data: { session } } = await supabase.auth.getSession();
+
       if (!session) {
+        setIsLoading(false);
         router.push('/admin/login');
         return;
       }
 
       // Ensure auth cookie is set (in case user already had a session from before)
-      document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure`;
+      document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
 
       // Check user role from profiles table
       const { data: profile, error: profileError } = await supabase
@@ -48,6 +51,7 @@ export default function AdminLayout({
 
       if (profileError || !profile) {
         console.error('Failed to fetch user profile');
+        setIsLoading(false);
         router.push('/admin/login');
         return;
       }
@@ -55,8 +59,9 @@ export default function AdminLayout({
       // Only allow admin and staff roles
       if (profile.role !== 'admin' && profile.role !== 'staff') {
         console.warn('User does not have admin/staff role');
-        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure';
+        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
         await supabase.auth.signOut();
+        setIsLoading(false);
         router.push('/admin/login?error=unauthorized');
         return;
       }
@@ -72,16 +77,17 @@ export default function AdminLayout({
     // Keep cookie in sync when session refreshes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'TOKEN_REFRESHED' && session) {
-        document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure`;
+        document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
       }
       if (event === 'SIGNED_OUT') {
-        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure';
-        document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax; Secure';
+        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
+        document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax';
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [pathname, router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount only — re-running on pathname changes causes race conditions
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -261,7 +267,7 @@ export default function AdminLayout({
       >
         <div className="h-full px-4 py-6 overflow-y-auto">
           <Link href="/admin" className="flex items-center mb-8 px-2 cursor-pointer">
-            <span className="text-xl font-['Pacifico'] text-blue-700">TIWAA PERFUME</span>
+            <span className="text-xl font-['Pacifico'] text-blue-700">TOUCHEEGLOW</span>
             <span className="ml-3 text-sm font-semibold text-gray-500">ADMIN</span>
           </Link>
 
